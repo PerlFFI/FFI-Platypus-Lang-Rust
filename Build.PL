@@ -7,6 +7,7 @@ BEGIN {
 use strict;
 use warnings;
 use lib 'inc';
+use lib 'lib';
 use My::ModuleBuild;
 use Env qw( @PATH );
 use File::Spec;
@@ -32,12 +33,12 @@ foreach my $path (@PATH)
 unless($rustc)
 {
   print "Unable to find rustc.  Please make sure it is in the PATH.\n";
-  exit;
+  print "You should still be able to use pre-compiled rust dynamic libs.\n";
 }
 
 my $builder = My::ModuleBuild->new(
   module_name   => 'FFI::Platypus::Lang::Rust',
-  dist_abstract => 'Tools and documentation for using Platypus with the Rust '.
+  dist_abstract => 'Documentation and tools for using Platypus with the Rust '.
                    'programming language',
   dist_author   => [ 'Graham Ollis <plicease@cpan.org>' ],
   license       => 'perl',

@@ -1,12 +1,12 @@
 ---
-abstract: 'Tools and documentation for using Platypus with the Rust programming language'
+abstract: 'Documentation and tools for using Platypus with the Rust programming language'
 author:
   - 'Graham Ollis <plicease@cpan.org>'
 build_requires: {}
 configure_requires:
   Module::Build: '0.38'
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4211, CPAN::Meta::Converter version 2.143240'
+generated_by: 'Module::Build version 0.421, CPAN::Meta::Converter version 2.143240'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
