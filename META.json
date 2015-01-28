@@ -1,0 +1,42 @@
+{
+   "abstract" : "Tools and documentation for using Platypus with the Rust programming language",
+   "author" : [
+      "Graham Ollis <plicease@cpan.org>"
+   ],
+   "dynamic_config" : 1,
+   "generated_by" : "Module::Build version 0.4211",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "FFI-Platypus-Lang-Rust",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.38"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "FFI::Platypus" : "0.16",
+            "perl" : "5.008001"
+         }
+      }
+   },
+   "provides" : {
+      "FFI::Platypus::Lang::Rust" : {
+         "file" : "lib/FFI/Platypus/Lang/Rust.pm",
+         "version" : "0.01"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ]
+   },
+   "version" : "0.01"
+}
