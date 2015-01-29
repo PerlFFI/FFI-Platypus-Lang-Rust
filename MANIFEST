@@ -1,5 +1,9 @@
 Build.PL
 Changes
+examples/points.pl
+examples/points.rs
+examples/string.pl
+examples/string.rs
 inc/My/ModuleBuild.pm
 lib/FFI/Platypus/Lang/Rust.pm
 LICENSE
