@@ -1,0 +1,32 @@
+NAME
+
+    FFI::Platypus::Lang::Rust - Documentation and tools for using Platypus
+    with the Rust programming language
+
+SYNOPSIS
+
+     use FFI::Platypus;
+     my $ffi = FFI::Platypus->new;
+     $ffi->with('Rust');
+
+DESCRIPTION
+
+    This module provides some hooks for Platypus to interact with the Rust
+    programming language.
+
+METHODS
+
+ native_type_map
+
+     my $hashref = FFI::Platypus::Lang::Rust->native_type_map;
+
+    This returns a hash reference containing the native aliases for the
+    Rust programming languages. That is the keys are native Rust types and
+    the values are libffi native types.
+
+SEE ALSO
+
+    FFI::Platypus
+
+      The Core Platypus documentation.
+
