@@ -7,17 +7,25 @@ use File::Glob qw( bsd_glob );
 use File::Which qw( which );
 use base qw( Module::Build::FFI );
 
-# ABSTRACT: Build Perl extensions in Rust with FFI
-# VERSION
+=head1 NAME
+
+Module::Build::FFI - Build Perl extensions in Rust with FFI
 
 =head1 DESCRIPTION
 
-L<Module::Build::FFI> variant for writing Perl extensions in Rust wiht FFI (sans XS).
+L<Module::Build::FFI> variant for writing Perl extensions in Rust wiht 
+FFI (sans XS).
+
+=head1 BASE CLASS
+
+All methods, properties and actions are inherited from:
+
+L<Module::Build::FFI>
 
 =head1 PROPERTIES
 
-Currently the Rust compile and link is done in one command so these are both provided
-to that one step.
+Currently the Rust compile and link is done in one command so these are 
+both provided to that one step.
 
 =over 4
 
@@ -32,8 +40,6 @@ Must be a array reference.
 Extra linker flags to be passed to C<rustc>.
 
 Must be a array reference.
-
-=back
 
 =back
 
@@ -80,7 +86,7 @@ sub ffi_have_compiler
  my $dll_path = $mb->ffi_build_dynamic_lib($src_dir, $name);
 
 Compiles the Rust source in the C<$src_dir> and link it into a dynamic library
-with base name of C<$name.$Config{dlexe}>.  If C<$target_dir is specified
+with base name of C<$name.$Config{dlexe}>.  If C<$target_dir> is specified
 then the dynamic library will be delivered into that directory.
 
 =cut
@@ -123,6 +129,28 @@ sub ffi_build_dynamic_lib
 
 1;
 
+=head1 EXAMPLES
+
+TODO
+
+=head1 SUPPORT
+
+If something does not work as advertised, or the way that you think it
+should, or if you have a feature request, please open an issue on this
+project's GitHub issue tracker:
+
+L<https://github.com/plicease/FFI-Platypus-Lang-Rust/issues>
+
+=head1 CONTRIBUTING
+
+If you have implemented a new feature or fixed a bug then you may make a
+pull reequest on this project's GitHub repository:
+
+L<https://github.com/plicease/FFI-Platypus-Lang-Rust/issues>
+
+Caution: if you do this too frequently I may nominate you as the new
+maintainer.  Extreme caution: if you like that sort of thing.
+
 =head1 SEE ALSO
 
 =over 4
@@ -131,13 +159,22 @@ sub ffi_build_dynamic_lib
 
 The Core Platypus documentation.
 
-=over 4
-
 =item L<Module::Build::FFI>
 
 General MB class for FFI / Platypus.
 
 =back
+
+=head1 AUTHOR
+
+Graham Ollis E<lt>plicease@cpan.orgE<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2015 by Graham Ollis.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
 
