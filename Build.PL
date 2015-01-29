@@ -45,20 +45,29 @@ my $builder = My::ModuleBuild->new(
   configure_requires => {
     'Module::Build' => 0.38,
     'File::Which' => 0,
-    'Module::Build::FFI' => '0.17'
+    'Module::Build::FFI' => '0.18'
   },
   build_requires => {
     'Module::Build' => 0.38,
     'File::Which' => 0,
-    'Module::Build::FFI' => '0.17'
+    'Module::Build::FFI' => '0.18'
   },
   test_requires => {
     'FFI::CheckLib' => 0,
   },
   requires => {
     'perl',         => '5.008001',
-    'FFI::Platypus' => '0.17',
+    'FFI::Platypus' => '0.18',
     'File::Which'   => 0,
+  },
+  meta_merge => {
+    resources => {
+      repository => "http://github.com/plicease/FFI-Platypus-Lang-Rust",
+      bugtracker => "http://github.com/plicease/FFI-Platypus-Lang-Rust/issues",
+    },
+    no_index => {
+      directory => [ 'examples' ],
+    },
   },
 );
 

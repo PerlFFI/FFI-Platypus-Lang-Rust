@@ -6,9 +6,15 @@ use Pod::Simple::Text;
 
 my $root = Pod::Abstract->load_file('lib/FFI/Platypus/Lang/Rust.pm');
 
-$_->detach for $root->select('//#cut');
+#$_->detach for $root->select('//#cut');
 
 pod2txt( $root => 'README' );
+
+foreach my $name (qw( SUPPORT CONTRIBUTING ))
+{
+  my($pod) = $root->select("/head1[\@heading=~{$name}]");
+  pod2txt($pod => $name);
+}
 
 sub pod2txt
 {
