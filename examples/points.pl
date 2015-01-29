@@ -5,7 +5,7 @@ use FFI::Platypus::Declare
   [ double => 'f64' ],
   [ opaque => 'Point' ];
 
-lib './libtest.so';
+lib './libpoints.so';
 attach make_point => [ i32, i32 ] => Point;
 attach get_distance => [Point, Point] => f64;
 
