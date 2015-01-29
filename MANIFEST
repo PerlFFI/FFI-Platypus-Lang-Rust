@@ -5,6 +5,7 @@ examples/points.rs
 examples/string.pl
 examples/string.rs
 inc/My/ModuleBuild.pm
+inc/run/readme.pl
 lib/FFI/Platypus/Lang/Rust.pm
 lib/Module/Build/FFI/Rust.pm
 libtest/lib.rs
@@ -12,6 +13,7 @@ LICENSE
 MANIFEST			This list of files
 META.json
 META.yml
+README
 t/00_diag.t
 t/00_diag.txt
 t/01_use.t
