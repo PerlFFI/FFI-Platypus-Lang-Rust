@@ -9,3 +9,4 @@ Module::Build
 PkgConfig
 Test::More
 FFI::Platypus
+Module::Which

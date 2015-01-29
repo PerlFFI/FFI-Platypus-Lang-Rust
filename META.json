@@ -14,15 +14,30 @@
    },
    "name" : "FFI-Platypus-Lang-Rust",
    "prereqs" : {
+      "build" : {
+         "requires" : {
+            "File::Which" : "0",
+            "Module::Build" : "0.38",
+            "Module::Build::FFI" : "0.17"
+         }
+      },
       "configure" : {
          "requires" : {
-            "Module::Build" : "0.38"
+            "File::Which" : "0",
+            "Module::Build" : "0.38",
+            "Module::Build::FFI" : "0.17"
          }
       },
       "runtime" : {
          "requires" : {
-            "FFI::Platypus" : "0.16",
+            "FFI::Platypus" : "0.17",
+            "File::Which" : "0",
             "perl" : "5.008001"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "FFI::CheckLib" : "0"
          }
       }
    },
@@ -30,6 +45,9 @@
       "FFI::Platypus::Lang::Rust" : {
          "file" : "lib/FFI/Platypus/Lang/Rust.pm",
          "version" : "0.01"
+      },
+      "Module::Build::FFI::Rust" : {
+         "file" : "lib/Module/Build/FFI/Rust.pm"
       }
    },
    "release_status" : "stable",

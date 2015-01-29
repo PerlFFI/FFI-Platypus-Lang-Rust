@@ -2,9 +2,15 @@
 abstract: 'Documentation and tools for using Platypus with the Rust programming language'
 author:
   - 'Graham Ollis <plicease@cpan.org>'
-build_requires: {}
-configure_requires:
+build_requires:
+  FFI::CheckLib: '0'
+  File::Which: '0'
   Module::Build: '0.38'
+  Module::Build::FFI: '0.17'
+configure_requires:
+  File::Which: '0'
+  Module::Build: '0.38'
+  Module::Build::FFI: '0.17'
 dynamic_config: 1
 generated_by: 'Module::Build version 0.421, CPAN::Meta::Converter version 2.143240'
 license: perl
@@ -16,8 +22,11 @@ provides:
   FFI::Platypus::Lang::Rust:
     file: lib/FFI/Platypus/Lang/Rust.pm
     version: '0.01'
+  Module::Build::FFI::Rust:
+    file: lib/Module/Build/FFI/Rust.pm
 requires:
-  FFI::Platypus: '0.16'
+  FFI::Platypus: '0.17'
+  File::Which: '0'
   perl: '5.008001'
 resources:
   license: http://dev.perl.org/licenses/

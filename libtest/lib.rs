@@ -1,4 +1,4 @@
 #[no_mangle]
-pub extern "C" fn hello_rust() -> *const u8 {
-  "Hello, world\n\0".as_ptr()
+pub extern "C" fn i32_sum(a:i32,b:i32) -> i32 {
+  a+b
 }
