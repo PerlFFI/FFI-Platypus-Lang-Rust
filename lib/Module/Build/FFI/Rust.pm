@@ -9,7 +9,7 @@ use base qw( Module::Build::FFI );
 
 =head1 NAME
 
-Module::Build::FFI - Build Perl extensions in Rust with FFI
+Module::Build::FFI::Rust - Build Perl extensions in Rust with FFI
 
 =head1 DESCRIPTION
 
