@@ -94,6 +94,14 @@ then the dynamic library will be delivered into that directory.
 sub ffi_build_dynamic_lib
 {
   my($self, $src_dir, $name, $target_dir) = @_;
+
+  if(@$src_dir > 1)
+  {
+    print STDERR "Module::Build::FFI::Rust only supports one ffi directory";
+    exit 2;
+  }
+  
+  $src_dir = $src_dir->[0];
   
   $target_dir = $src_dir unless defined $target_dir;
   my @sources = bsd_glob("$src_dir/*.rs");
