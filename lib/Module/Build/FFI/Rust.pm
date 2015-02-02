@@ -7,6 +7,8 @@ use File::Glob qw( bsd_glob );
 use File::Which qw( which );
 use base qw( Module::Build::FFI );
 
+our $VERSION = '0.02';
+
 =head1 NAME
 
 Module::Build::FFI::Rust - Build Perl extensions in Rust with FFI
