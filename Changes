@@ -1,4 +1,6 @@
 Revision history for Perl module FFI::Platypus::Lang::Rust
 
+  - Fix synopsis to use "lang" instead of "with"
+
 0.01  Jan 30, 2015
   - Initial release
