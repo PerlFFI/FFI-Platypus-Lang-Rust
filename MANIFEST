@@ -1,3 +1,4 @@
+.travis.yml
 Build.PL
 Changes
 CONTRIBUTING
@@ -7,6 +8,7 @@ examples/string.pl
 examples/string.rs
 inc/My/ModuleBuild.pm
 inc/run/readme.pl
+inc/run/test_examples.pl
 INSTALL
 lib/FFI/Platypus/Lang/Rust.pm
 lib/Module/Build/FFI/Rust.pm

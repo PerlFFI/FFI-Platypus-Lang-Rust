@@ -13,6 +13,7 @@ script:
   - perl Build.PL
   - ./Build --verbose
   - ./Build test --verbose
+  - perl inc/run/test_examples.pl
 
 env:
   - FFI_PLATYPUS=1
