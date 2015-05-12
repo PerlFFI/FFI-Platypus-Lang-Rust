@@ -1,4 +1,6 @@
-// compile with: rustc --crate-type dylib points.rs
+#![crate_type = "dylib"]
+
+// compile with: rustc points.rs
 // borrowed with modifications from:
 // http://paul.woolcock.us/posts/rust-perl-julia-ffi.html
 // http://blog.skylight.io/bending-the-curve-writing-safe-fast-native-gems-with-rust/

@@ -1,4 +1,6 @@
-// compile with: rustc --crate-type dylib string.rs
+#![crate_type = "dylib"]
+
+// compile with: rustc string.rs
 // borrowed from:
 // http://doc.rust-lang.org/book/ffi.html
 

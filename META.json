@@ -4,7 +4,7 @@
       "Graham Ollis <plicease@cpan.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.421",
+   "generated_by" : "Module::Build version 0.4211",
    "license" : [
       "perl_5"
    ],
@@ -42,7 +42,10 @@
       },
       "test" : {
          "requires" : {
-            "FFI::CheckLib" : "0"
+            "FFI::CheckLib" : "0",
+            "File::chdir" : "0",
+            "IPC::Run3" : "0",
+            "Test::Script" : "1.09"
          }
       }
    },

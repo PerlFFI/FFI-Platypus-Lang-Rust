@@ -54,6 +54,9 @@ my $builder = My::ModuleBuild->new(
   },
   test_requires => {
     'FFI::CheckLib' => 0,
+    'Test::Script'  => '1.09',
+    'File::chdir'   => 0,
+    'IPC::Run3'     => 0,
   },
   requires => {
     'perl',         => '5.008001',

@@ -5,14 +5,17 @@ author:
 build_requires:
   FFI::CheckLib: '0'
   File::Which: '0'
+  File::chdir: '0'
+  IPC::Run3: '0'
   Module::Build: '0.38'
   Module::Build::FFI: '0.18'
+  Test::Script: '1.09'
 configure_requires:
   File::Which: '0'
   Module::Build: '0.38'
   Module::Build::FFI: '0.18'
 dynamic_config: 1
-generated_by: 'Module::Build version 0.421, CPAN::Meta::Converter version 2.143240'
+generated_by: 'Module::Build version 0.4211, CPAN::Meta::Converter version 2.150001'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
