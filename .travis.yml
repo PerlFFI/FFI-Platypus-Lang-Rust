@@ -1,5 +1,7 @@
 language: rust
 
+rust: 1.0.0
+
 before_install:
   - sudo apt-get install perl
   - sudo apt-get install cpanminus
