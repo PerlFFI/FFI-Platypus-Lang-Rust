@@ -1,13 +1,8 @@
-#![feature(box_syntax)]
-
 // compile with: rustc --crate-type dylib points.rs
 // borrowed with modifications from:
 // http://paul.woolcock.us/posts/rust-perl-julia-ffi.html
 // http://blog.skylight.io/bending-the-curve-writing-safe-fast-native-gems-with-rust/
 
-use std::num::{Int,Float};
-
-#[deriving(Copy)]
 pub struct Point { x: i32, y: i32 }
 
 struct Line { p1: Point, p2: Point }
@@ -25,7 +20,7 @@ impl Line {
 
 #[no_mangle]
 pub extern "C" fn make_point(x: i32, y:i32) -> Box<Point> {
-  box Point { x: x, y: y }
+  Box::new(Point { x: x, y: y })
 }
 
 #[no_mangle]
