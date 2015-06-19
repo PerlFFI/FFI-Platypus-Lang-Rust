@@ -67,6 +67,7 @@ my $builder = My::ModuleBuild->new(
     resources => {
       repository => "http://github.com/plicease/FFI-Platypus-Lang-Rust",
       bugtracker => "http://github.com/plicease/FFI-Platypus-Lang-Rust/issues",
+      x_IRC => "irc://irc.perl.org/#native",
     },
     no_index => {
       directory => [ 'examples' ],
