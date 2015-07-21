@@ -1,14 +1,14 @@
 language: rust
 
+addons:
+  apt:
+    sources:
+      - perl
+
 rust: beta
 
 before_install:
-  - sudo apt-get install perl
-  - sudo apt-get install cpanminus
-  - sudo cpanm -n FFI::Platypus
-  - sudo cpanm -n File::Which
-  # needed for example test
-  - sudo cpanm -n Test::Script IPC::Run3 File::chdir
+  - curl -L https://cpanmin.us | perl - -n App::cpanminus local::lib FFI::Platypus File::Which Test::Script IPC::Run3 File::chdir
 
 install:
   - perl -V
@@ -19,7 +19,7 @@ script:
   - ./Build test --verbose
 
 env:
-  - FFI_PLATYPUS=1
-  - FFI_PLATYPUS_DEBUG_FAKE32=1
-  - FFI_PLATYPUS_NO_ALLOCA=1
-  - FFI_PLATYPUS_DEBUG_FAKE32=1 FFI_PLATYPUS_NO_ALLOCA=1
+  - PERL5LIB=$HOME/perl5/lib/perl5 FFI_PLATYPUS=1
+  - PERL5LIB=$HOME/perl5/lib/perl5 FFI_PLATYPUS_DEBUG_FAKE32=1
+  - PERL5LIB=$HOME/perl5/lib/perl5 FFI_PLATYPUS_NO_ALLOCA=1
+  - PERL5LIB=$HOME/perl5/lib/perl5 FFI_PLATYPUS_DEBUG_FAKE32=1 FFI_PLATYPUS_NO_ALLOCA=1
