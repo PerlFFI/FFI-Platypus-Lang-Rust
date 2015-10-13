@@ -124,7 +124,8 @@ sub ffi_build_dynamic_lib
       exit 2 if $?;
     };
     
-    my($build_dll) = bsd_glob("$src_dir/target/release/*.$Config{dlext}");
+    my $dlext = $^O eq 'darwin' ? 'dylib' : $Config{dlext};
+    my($build_dll) = bsd_glob("$src_dir/target/release/*.$dlext");
     copy($build_dll, $dll) || do {
       print STDERR "copy failed for\n";
       print STDERR "  $build_dll => $dll\n";
