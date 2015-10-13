@@ -84,5 +84,5 @@
 \.dll$
 \.bundle$
 
-\bffi/target
-\bffi/Cargo.lock
+\blibtest/target
+\blibtest/Cargo.lock$
