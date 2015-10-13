@@ -130,11 +130,10 @@ sub ffi_build_dynamic_lib
       exit 2;
     };
     
-    my $test_dirs = $self->notes('ffi_rust_test_dirs');
+    my $test_dirs = $self->notes('ffi_rust_dirs');
     my %test_dirs = $test_dirs ? map { $_ => 1 } @$test_dirs : ();
     $test_dirs{$src_dir} = 1;
-    $DB::single = 1;
-    $self->notes('ffi_rust_test_dirs' => [keys %test_dirs]);
+    $self->notes('ffi_rust_dirs' => [keys %test_dirs]);
   }
   
   else
@@ -183,7 +182,7 @@ sub ACTION_testrust
 
   $self->notes('ffi_rust_test_fail' => 0);
   
-  my $test_dirs = $self->notes('ffi_rust_test_dirs');
+  my $test_dirs = $self->notes('ffi_rust_dirs');
   return unless $test_dirs;
   
   foreach my $dir (@$test_dirs)
