@@ -136,7 +136,8 @@ sub ffi_build_dynamic_lib
     print STDERR "== WARNING WARNING WARNING ==\n";
     print STDERR "\n";
     print STDERR "building rust project without cargo is deprecated and will be removed\n";
-    print STDERR "from a future version of Module::Build::FFI::Rust!\n";
+    print STDERR "from a future version of Module::Build::FFI::Rust!  But not before\n";
+    print STDERR "31 October 2016.\n";
     print STDERR "\n";
     print STDERR "== WARNING WARNING WARNING ==\n";
 
@@ -165,9 +166,9 @@ sub ffi_build_dynamic_lib
     print "@cmd\n";
     system @cmd;
     exit 2 if $?;
-  
-    $dll;
   }
+  
+  $dll;
 }
 
 sub ACTION_testrust
