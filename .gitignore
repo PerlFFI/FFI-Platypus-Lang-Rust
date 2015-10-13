@@ -11,3 +11,5 @@
 *.o
 /libtest/Cargo.lock
 /libtest/target
+*.bundle
+*.dylib

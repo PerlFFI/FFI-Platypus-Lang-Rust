@@ -32,7 +32,9 @@ subtest 'compile rust' => sub {
     note "[out]\n$out" if $out;
     note "[err]\n$out" if $err;
   }
-  
+
+  dorename();
+
 };
 
 subtest 'perl ffi scripts' => sub {
@@ -56,5 +58,17 @@ subtest 'perl ffi scripts' => sub {
       note "[err]\n$out" if $err;
     }
   }
-
 };
+
+sub dorename
+{
+  if($^O eq 'darwin')
+  {
+    foreach my $old (bsd_glob("*.dylib"))
+    {
+      my $new = $old;
+      $new =~ s{dylib$}{so};
+      rename $old => $new;
+    }
+  }
+}
