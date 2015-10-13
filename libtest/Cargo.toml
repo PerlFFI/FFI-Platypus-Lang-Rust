@@ -1,0 +1,8 @@
+[package]
+name = "platypustest"
+version = "0.1.0"
+authors = ["Graham Ollis <plicease@cpan.org>"]
+
+[lib]
+name = "platypustest"
+crate-type = ["dylib"]

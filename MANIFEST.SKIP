@@ -83,3 +83,6 @@
 \.so$
 \.dll$
 \.bundle$
+
+\bffi/target
+\bffi/Cargo.lock

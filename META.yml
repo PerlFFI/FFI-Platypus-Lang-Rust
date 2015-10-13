@@ -15,7 +15,7 @@ configure_requires:
   Module::Build: '0.38'
   Module::Build::FFI: '0.18'
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4211, CPAN::Meta::Converter version 2.150001'
+generated_by: 'Module::Build version 0.4214, CPAN::Meta::Converter version 2.150005'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -36,7 +36,9 @@ requires:
   File::Which: '0'
   perl: '5.008001'
 resources:
+  IRC: irc://irc.perl.org/#native
   bugtracker: http://github.com/plicease/FFI-Platypus-Lang-Rust/issues
   license: http://dev.perl.org/licenses/
   repository: http://github.com/plicease/FFI-Platypus-Lang-Rust
 version: '0.02'
+x_serialization_backend: 'CPAN::Meta::YAML version 0.017'

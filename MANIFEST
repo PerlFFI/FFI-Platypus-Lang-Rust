@@ -12,7 +12,8 @@ inc/run/readme.pl
 INSTALL
 lib/FFI/Platypus/Lang/Rust.pm
 lib/Module/Build/FFI/Rust.pm
-libtest/lib.rs
+libtest/Cargo.toml
+libtest/src/lib.rs
 LICENSE
 MANIFEST			This list of files
 META.json
