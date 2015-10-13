@@ -114,6 +114,8 @@ sub ffi_build_dynamic_lib
 
   if(-e File::Spec->catfile($src_dir, 'Cargo.toml'))
   {
+    $self->add_to_cleanup("$src_dir/target");
+  
     do {
       local $CWD = $src_dir;
       my @cmd = ('cargo', 'build', '--release');
