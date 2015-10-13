@@ -111,7 +111,7 @@ sub ffi_build_dynamic_lib
   $target_dir = $src_dir unless defined $target_dir;
   
   my $dll = File::Spec->catfile($target_dir, "$name.$Config{dlext}");
-  
+
   if(-e File::Spec->catfile($src_dir, 'Cargo.toml'))
   {
     do {
@@ -129,6 +129,12 @@ sub ffi_build_dynamic_lib
       print STDERR "reason: $!\n";
       exit 2;
     };
+    
+    my $test_dirs = $self->notes('ffi_rust_test_dirs');
+    my %test_dirs = $test_dirs ? map { $_ => 1 } @$test_dirs : ();
+    $test_dirs{$src_dir} = 1;
+    $DB::single = 1;
+    $self->notes('ffi_rust_test_dirs' => [keys %test_dirs]);
   }
   
   else
@@ -174,7 +180,20 @@ sub ffi_build_dynamic_lib
 sub ACTION_testrust
 {
   my($self) = @_;
-  # TODO
+
+  $self->notes('ffi_rust_test_fail' => 0);
+  
+  my $test_dirs = $self->notes('ffi_rust_test_dirs');
+  return unless $test_dirs;
+  
+  foreach my $dir (@$test_dirs)
+  {
+    local $CWD = $dir;
+    my @cmd = ('cargo', 'test');
+    print "@cmd\n";
+    system @cmd;
+    $self->notes('ffi_rust_test_fail' => 1) if $?;
+  }
 }
 
 sub ACTION_test
@@ -182,6 +201,10 @@ sub ACTION_test
   my($self) = @_;
   $self->depends_on('testrust');
   $self->SUPER::ACTION_test;
+  if($self->notes('ffi_rust_test_fail'))
+  {
+    exit 2;
+  }
 }
 
 1;
