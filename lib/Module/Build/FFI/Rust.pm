@@ -5,6 +5,8 @@ use warnings;
 use Config;
 use File::Glob qw( bsd_glob );
 use File::Which qw( which );
+use File::chdir;
+use File::Copy qw( copy );
 use base qw( Module::Build::FFI );
 
 our $VERSION = '0.02';
@@ -78,8 +80,9 @@ sub ffi_have_compiler
   my($self) = @_;
   
   my $rustc = which('rustc');
+  my $cargo = which('cargo');
   
-  return !!$rustc;
+  return (!!$rustc) && (!!$cargo);
 }
 
 =head2 ffi_build_dynamic_lib
@@ -106,35 +109,78 @@ sub ffi_build_dynamic_lib
   $src_dir = $src_dir->[0];
   
   $target_dir = $src_dir unless defined $target_dir;
-  my @sources = bsd_glob("$src_dir/*.rs");
-  
-  return unless @sources;
-  
-  if(@sources != 1)
-  {
-    print STDERR "Only one Rust source file at a time please.\n";
-    print STDERR "You appear to have more than one in $src_dir.\n";
-    exit 2;
-  }
-
-  my $rustc = which('rustc');
   
   my $dll = File::Spec->catfile($target_dir, "$name.$Config{dlext}");
   
-  my @cmd = (
-    $rustc,
-    @{ $self->ffi_rust_extra_compiler_flags },
-    @{ $self->ffi_rust_extra_linker_flags },
-    '--crate-type' => 'dylib',
-    @sources,
-    '-o', => $dll,
-  );
+  if(-e File::Spec->catfile($src_dir, 'Cargo.toml'))
+  {
+    do {
+      local $CWD = $src_dir;
+      my @cmd = ('cargo', 'build', '--release');
+      print "@cmd\n";
+      system @cmd;
+      exit 2 if $?;
+    };
+    
+    my($build_dll) = bsd_glob("$src_dir/target/release/*.$Config{dlext}");
+    copy($build_dll, $dll) || do {
+      print STDERR "copy failed for\n";
+      print STDERR "  $build_dll => $dll\n";
+      print STDERR "reason: $!\n";
+      exit 2;
+    };
+  }
   
-  print "@cmd\n";
-  system @cmd;
-  exit 2 if $?;
+  else
+  {
+    print STDERR "== WARNING WARNING WARNING ==\n";
+    print STDERR "\n";
+    print STDERR "building rust project without cargo is deprecated and will be removed\n";
+    print STDERR "from a future version of Module::Build::FFI::Rust!\n";
+    print STDERR "\n";
+    print STDERR "== WARNING WARNING WARNING ==\n";
+
+    my @sources = bsd_glob("$src_dir/*.rs");
   
-  $dll;
+    return unless @sources;
+  
+    if(@sources != 1)
+    {
+      print STDERR "Only one Rust source file at a time please.\n";
+      print STDERR "You appear to have more than one in $src_dir.\n";
+      exit 2;
+    }
+
+    my $rustc = which('rustc');
+  
+    my @cmd = (
+      $rustc,
+      @{ $self->ffi_rust_extra_compiler_flags },
+      @{ $self->ffi_rust_extra_linker_flags },
+      '--crate-type' => 'dylib',
+      @sources,
+      '-o', => $dll,
+    );
+  
+    print "@cmd\n";
+    system @cmd;
+    exit 2 if $?;
+  
+    $dll;
+  }
+}
+
+sub ACTION_testrust
+{
+  my($self) = @_;
+  # TODO
+}
+
+sub ACTION_test
+{
+  my($self) = @_;
+  $self->depends_on('testrust');
+  $self->SUPER::ACTION_test;
 }
 
 1;
