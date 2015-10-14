@@ -52,11 +52,11 @@
    "provides" : {
       "FFI::Platypus::Lang::Rust" : {
          "file" : "lib/FFI/Platypus/Lang/Rust.pm",
-         "version" : "0.03"
+         "version" : "0.04"
       },
       "Module::Build::FFI::Rust" : {
          "file" : "lib/Module/Build/FFI/Rust.pm",
-         "version" : "0.03"
+         "version" : "0.04"
       }
    },
    "release_status" : "stable",
@@ -72,6 +72,6 @@
       },
       "x_IRC" : "irc://irc.perl.org/#native"
    },
-   "version" : "0.03",
+   "version" : "0.04",
    "x_serialization_backend" : "JSON::PP version 2.27300"
 }

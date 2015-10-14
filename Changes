@@ -1,5 +1,8 @@
 Revision history for Perl module FFI::Platypus::Lang::Rust
 
+0.04  Oct 14, 2015
+  - Fixes for Mac OS X
+
 0.03  Oct 13, 2015
   - If there is a Cargo.toml file in the ffi project directory, use
     cargo to build and test the project.
