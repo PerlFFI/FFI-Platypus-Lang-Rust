@@ -213,7 +213,10 @@ sub ACTION_test
 
 =head1 EXAMPLES
 
-TODO
+For a complete example working example, see this module which calculates
+fibonacci numbers using Rust.
+
+L<https://github.com/plicease/Fibonacci-FFI>
 
 =head1 SUPPORT
 
