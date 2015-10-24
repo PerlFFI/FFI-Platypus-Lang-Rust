@@ -43,6 +43,7 @@ subtest 'perl ffi scripts' => sub {
   
   my @scripts = bsd_glob '*.pl';
   
+  plan skip_all => 'test not supported on Windows' if $^O eq 'MSWin32';
   plan tests => 0+@scripts;
   
   foreach my $script (@scripts)
