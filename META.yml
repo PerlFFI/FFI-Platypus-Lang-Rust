@@ -12,10 +12,11 @@ build_requires:
   Test::Script: '1.09'
 configure_requires:
   File::Which: '0'
+  File::chdir: '0'
   Module::Build: '0.38'
   Module::Build::FFI: '0.18'
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4214, CPAN::Meta::Converter version 2.150005'
+generated_by: 'Module::Build version 0.4224, CPAN::Meta::Converter version 2.150010'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -27,10 +28,10 @@ no_index:
 provides:
   FFI::Platypus::Lang::Rust:
     file: lib/FFI/Platypus/Lang/Rust.pm
-    version: '0.04'
+    version: '0.05'
   Module::Build::FFI::Rust:
     file: lib/Module/Build/FFI/Rust.pm
-    version: '0.04'
+    version: '0.05'
 requires:
   FFI::Platypus: '0.18'
   File::Which: '0'
@@ -40,5 +41,5 @@ resources:
   bugtracker: http://github.com/plicease/FFI-Platypus-Lang-Rust/issues
   license: http://dev.perl.org/licenses/
   repository: http://github.com/plicease/FFI-Platypus-Lang-Rust
-version: '0.04'
-x_serialization_backend: 'CPAN::Meta::YAML version 0.017'
+version: '0.05'
+x_serialization_backend: 'CPAN::Meta::YAML version 0.018'

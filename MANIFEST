@@ -15,6 +15,7 @@ lib/Module/Build/FFI/Rust.pm
 libtest/Cargo.toml
 libtest/src/lib.rs
 LICENSE
+maint/releaseprep
 MANIFEST			This list of files
 META.json
 META.yml

@@ -4,13 +4,13 @@
       "Graham Ollis <plicease@cpan.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4214",
+   "generated_by" : "Module::Build version 0.4224",
    "license" : [
       "perl_5"
    ],
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
-      "version" : "2"
+      "version" : 2
    },
    "name" : "FFI-Platypus-Lang-Rust",
    "no_index" : {
@@ -22,6 +22,7 @@
       "build" : {
          "requires" : {
             "File::Which" : "0",
+            "File::chdir" : "0",
             "Module::Build" : "0.38",
             "Module::Build::FFI" : "0.18"
          }
@@ -29,6 +30,7 @@
       "configure" : {
          "requires" : {
             "File::Which" : "0",
+            "File::chdir" : "0",
             "Module::Build" : "0.38",
             "Module::Build::FFI" : "0.18"
          }
@@ -52,11 +54,11 @@
    "provides" : {
       "FFI::Platypus::Lang::Rust" : {
          "file" : "lib/FFI/Platypus/Lang/Rust.pm",
-         "version" : "0.04"
+         "version" : "0.05"
       },
       "Module::Build::FFI::Rust" : {
          "file" : "lib/Module/Build/FFI/Rust.pm",
-         "version" : "0.04"
+         "version" : "0.05"
       }
    },
    "release_status" : "stable",
@@ -72,6 +74,6 @@
       },
       "x_IRC" : "irc://irc.perl.org/#native"
    },
-   "version" : "0.04",
-   "x_serialization_backend" : "JSON::PP version 2.27300"
+   "version" : "0.05",
+   "x_serialization_backend" : "JSON::PP version 2.97001"
 }
