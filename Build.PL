@@ -30,12 +30,14 @@ my $builder = My::ModuleBuild->new(
   configure_requires => {
     'Module::Build' => 0.38,
     'File::Which' => 0,
-    'Module::Build::FFI' => '0.18'
+    'Module::Build::FFI' => '0.18',
+    'File::chdir'   => 0,
   },
   build_requires => {
     'Module::Build' => 0.38,
     'File::Which' => 0,
-    'Module::Build::FFI' => '0.18'
+    'Module::Build::FFI' => '0.18',
+    'File::chdir'   => 0,
   },
   test_requires => {
     'FFI::CheckLib' => 0,

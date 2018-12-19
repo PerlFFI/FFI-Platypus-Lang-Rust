@@ -1,5 +1,7 @@
 Revision history for Perl module FFI::Platypus::Lang::Rust
 
+  - Explicitly make File::chdir a configure and runtime prereq
+
 0.04  Oct 14, 2015
   - Fixes for Mac OS X
 
