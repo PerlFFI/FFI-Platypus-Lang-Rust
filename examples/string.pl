@@ -1,8 +1,12 @@
-use strict;
+#!/usr/bin/env perl
+
+use v5.10;
 use warnings;
-use FFI::Platypus::Declare qw( string );
+use FFI::Platypus;
 
-lib './libstring.so';
-attach hello_rust => [] => 'string';
+my $ffi = FFI::Platypus->new;
+$ffi->lang('Rust');
+$ffi->lib('./libstring.so');
+$ffi->attach(hello_rust => [] => 'string');
 
-print hello_rust();
+say hello_rust();
