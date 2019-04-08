@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-use v5.10;
+use v5.12;
 use warnings;
 use FFI::Platypus;
 
