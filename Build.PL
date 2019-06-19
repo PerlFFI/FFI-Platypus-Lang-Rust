@@ -60,6 +60,7 @@ my $builder = My::ModuleBuild->new(
       directory => [ 'examples' ],
     },
   },
+  ffi_libtest_dir => [ 't/ffi' ],
 );
 
 $builder->add_to_cleanup(
@@ -68,10 +69,10 @@ $builder->add_to_cleanup(
   'examples/*.dll',
   'examples/*.bundle',
   'examples/*.dylib',
-  'libtest/*.so',
-  'libtest/*.dll',
-  'libtest/*.bundle',
-  'libtest/*.dylib',
+  't/ffi/*.so',
+  't/ffi/*.dll',
+  't/ffi/*.bundle',
+  't/ffi/*.dylib',
   'FFI-Platypus-Lang-Rust-*',
 );
 
