@@ -10,7 +10,7 @@
 *.so
 *.dll
 *.o
-/libtest/Cargo.lock
-/libtest/target
+/t/ffi/Cargo.lock
+/t/ffi/target
 *.bundle
 *.dylib
