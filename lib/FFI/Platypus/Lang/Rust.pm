@@ -85,11 +85,6 @@ directly call from Perl.  For example:
    bar();
  }
 
-In the future we may add support for name mangling so that you can use
-the Rust names, as we attempt to do for L<C++|FFI::Platypus::Lang::CPP>.
-In fact we may be able to use the same technique, as it appears that
-Rust uses the same mangling format.
-
 =head1 METHODS
 
 Generally you will not use this class directly, instead interacting with
