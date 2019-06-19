@@ -11,8 +11,6 @@ my $rustc = which 'rustc';
 
 plan skip_all => 'Test requirest a rust compiler' unless $rustc;
 
-plan tests => 2;
-
 subtest 'compile rust' => sub {
   local $CWD = 'examples';
 
@@ -49,7 +47,6 @@ subtest 'perl ffi scripts' => sub {
   foreach my $script (@scripts)
   {
     subtest $script => sub {
-      plan tests => 2;
       script_compiles $script;
 
       my($out, $err) = ('','');
@@ -73,3 +70,5 @@ sub dorename
     }
   }
 }
+
+done_testing;
