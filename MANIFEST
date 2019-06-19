@@ -25,5 +25,4 @@ t/02_types.t
 t/example.t
 t/ffi/Cargo.toml
 t/ffi/src/lib.rs
-t/ffi_platypus_attach.t
 t/ffi_platypus_lang_rust.t
