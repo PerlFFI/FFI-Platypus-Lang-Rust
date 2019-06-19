@@ -46,7 +46,7 @@ This document also documents issues and caveats that I have discovered
 in my attempts to work with Rust and FFI.
 
 This module is somewhat experimental.  It is also available for adoption 
-for anyone either sufficiently knowledgable about Rust or eager enough 
+for anyone either sufficiently knowledgeable about Rust or eager enough
 to learn enough about Rust.  If you are interested, please send me a 
 pull request or two on the project's GitHub.
 
@@ -68,7 +68,7 @@ Rust names are "mangled" to handle features such as modules and the fact
 that some characters in Rust names are illegal machine code symbol 
 names. For now that means that you have to tell Rust not to mangle the 
 names of functions that you are going to call from Perl.  You can 
-accomplish that lke this:
+accomplish that like this:
 
  #[no_mangle]
  pub extern "C" fn foo() {
