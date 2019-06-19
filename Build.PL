@@ -73,6 +73,7 @@ $builder->add_to_cleanup(
   't/ffi/*.dll',
   't/ffi/*.bundle',
   't/ffi/*.dylib',
+  't/ffi/Cargo.lock',
   'FFI-Platypus-Lang-Rust-*',
 );
 
