@@ -15,20 +15,20 @@ plan tests => 2;
 
 subtest 'compile rust' => sub {
   local $CWD = 'examples';
-  
+
   my @rust_source_files = bsd_glob '*.rs';
-  
+
   plan tests => 0+@rust_source_files;
-  
+
   foreach my $rust_source_file (@rust_source_files)
   {
     my @cmd = ($rustc, $rust_source_file);
     my($out, $err) = ('','');
-    
+
     run3 \@cmd, \'', \$out, \$err;
 
     ok $? == 0, "@cmd";
-    
+
     note "[out]\n$out" if $out;
     note "[err]\n$out" if $err;
   }
@@ -40,12 +40,12 @@ subtest 'compile rust' => sub {
 subtest 'perl ffi scripts' => sub {
 
   local $CWD = 'examples';
-  
+
   my @scripts = bsd_glob '*.pl';
-  
+
   plan skip_all => 'test not supported on Windows' if $^O eq 'MSWin32';
   plan tests => 0+@scripts;
-  
+
   foreach my $script (@scripts)
   {
     subtest $script => sub {
