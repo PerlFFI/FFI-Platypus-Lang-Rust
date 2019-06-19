@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 1;
+use Test::More;
 use FFI::Platypus::Lang::Rust;
 
 my $types = FFI::Platypus::Lang::Rust->native_type_map;
@@ -11,3 +11,5 @@ foreach my $rust_type (sort keys %$types)
 }
 
 pass 'okay';
+
+done_testing;
