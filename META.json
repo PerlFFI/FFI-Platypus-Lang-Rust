@@ -24,7 +24,7 @@
             "File::Which" : "0",
             "File::chdir" : "0",
             "Module::Build" : "0.38",
-            "Module::Build::FFI" : "0.18"
+            "Module::Build::FFI" : "0.49"
          }
       },
       "configure" : {
@@ -32,12 +32,12 @@
             "File::Which" : "0",
             "File::chdir" : "0",
             "Module::Build" : "0.38",
-            "Module::Build::FFI" : "0.18"
+            "Module::Build::FFI" : "0.49"
          }
       },
       "runtime" : {
          "requires" : {
-            "FFI::Platypus" : "0.18",
+            "FFI::Platypus" : "0.88",
             "File::Which" : "0",
             "perl" : "5.008001"
          }
@@ -54,11 +54,11 @@
    "provides" : {
       "FFI::Platypus::Lang::Rust" : {
          "file" : "lib/FFI/Platypus/Lang/Rust.pm",
-         "version" : "0.05"
+         "version" : "0.06"
       },
       "Module::Build::FFI::Rust" : {
          "file" : "lib/Module/Build/FFI/Rust.pm",
-         "version" : "0.05"
+         "version" : "0.06"
       }
    },
    "release_status" : "stable",
@@ -74,6 +74,6 @@
       },
       "x_IRC" : "irc://irc.perl.org/#native"
    },
-   "version" : "0.05",
-   "x_serialization_backend" : "JSON::PP version 2.97001"
+   "version" : "0.06",
+   "x_serialization_backend" : "JSON::PP version 4.02"
 }

@@ -1,5 +1,8 @@
 Revision history for Perl module FFI::Platypus::Lang::Rust
 
+0.06 2019-06-19 18:34:38 -0400
+  - Documentation updates and fixes
+
 0.05 2018-12-19 14:40:25 -0700
   - Explicitly make File::chdir a configure and runtime prereq
 
