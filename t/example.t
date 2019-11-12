@@ -58,6 +58,11 @@ subtest 'perl ffi scripts' => sub {
   }
 };
 
+{
+  local $CWD = 'examples';
+  unlink $_ for bsd_glob '*.so';
+}
+
 sub dorename
 {
   if($^O eq 'darwin')
