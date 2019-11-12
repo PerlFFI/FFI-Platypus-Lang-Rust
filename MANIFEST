@@ -1,22 +1,20 @@
 .gitattributes
 .travis.yml
-Build.PL
 Changes
 CONTRIBUTING
 examples/points.pl
 examples/points.rs
 examples/string.pl
 examples/string.rs
+fbx.json
 inc/My/ModuleBuild.pm
 inc/run/readme.pl
 INSTALL
 lib/FFI/Platypus/Lang/Rust.pm
-lib/Module/Build/FFI/Rust.pm
 LICENSE
 maint/releaseprep
+Makefile.PL
 MANIFEST			This list of files
-META.json
-META.yml
 README
 SUPPORT
 t/00_diag.t

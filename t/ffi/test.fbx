@@ -1,0 +1,10 @@
+use strict;
+use warnings;
+use lib 'lib';
+
+our $DIR;
+
+{
+  verbose => 1,
+  source => [ "$DIR/Cargo.toml" ],
+}

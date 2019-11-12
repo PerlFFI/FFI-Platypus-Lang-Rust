@@ -1,5 +1,5 @@
-/Build
-/Build.bat
+/Makefile
+/pm_to_blib
 /*.bak
 /*.tmp
 /MYMETA.json
@@ -14,3 +14,4 @@
 /t/ffi/target
 *.bundle
 *.dylib
+/fbx.json

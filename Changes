@@ -1,5 +1,9 @@
 Revision history for Perl module FFI::Platypus::Lang::Rust
 
+  - Migrate to ExtUtils::MakeMaker
+  - Migrate frin Module::Build::FFI to FFI::Build
+  - Added FFI::Build::File::Cargo
+
 0.06 2019-06-19 18:34:38 -0400
   - Documentation updates and fixes
 

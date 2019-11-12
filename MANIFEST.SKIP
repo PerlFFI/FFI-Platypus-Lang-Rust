@@ -26,6 +26,7 @@
 \b_eumm/                # 7.05_05 and above
 
 # Avoid Module::Build generated and utility files.
+\bMakefile$
 \bBuild$
 \b_build/
 \bBuild.bat$
@@ -86,3 +87,5 @@
 
 \bt/ffi/target
 \bt/ffi/Cargo.lock$
+
+\bfbx\.json$
