@@ -5,7 +5,7 @@ use Test::Script;
 use File::chdir;
 use File::Which   qw( which);
 use File::Glob    qw( bsd_glob );
-use IPC::Run3     qw( run3 );
+use Capture::Tiny qw( capture_merged );
 
 my $rustc = which 'rustc';
 
@@ -21,14 +21,16 @@ subtest 'compile rust' => sub {
   foreach my $rust_source_file (@rust_source_files)
   {
     my @cmd = ($rustc, $rust_source_file);
-    my($out, $err) = ('','');
 
-    run3 \@cmd, \'', \$out, \$err;
+    my($out, $ret) = capture_merged {
+      print "+@cmd";
+      system @cmd;
+      $?;
+    };
 
-    ok $? == 0, "@cmd";
-
-    note "[out]\n$out" if $out;
-    note "[err]\n$out" if $err;
+    ok($ret == 0, "@cmd")
+      ? note $out
+      : diag $out;
   }
 
   dorename();

@@ -47,7 +47,7 @@ my %WriteMakefileArgs = (
     'FFI::CheckLib'       => 0.11,
   },
   TEST_REQUIRES => {
-    'IPC::Run3'           => 0,
+    'Capture::Tiny'       => 0,
     'Test::Script'        => 0,
   },
   META_MERGE => {
