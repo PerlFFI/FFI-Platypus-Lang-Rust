@@ -10,8 +10,6 @@
 *.so
 *.dll
 *.o
-/t/ffi/Cargo.lock
-/t/ffi/target
 *.bundle
 *.dylib
 /fbx.json

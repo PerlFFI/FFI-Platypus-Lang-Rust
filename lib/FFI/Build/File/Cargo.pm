@@ -43,6 +43,8 @@ sub build_item
     die "todo";
   }
 
+  return $lib if -f $lib->path && !$lib->needs_rebuild($self->_deps($cargo_toml->parent, 1));
+
   {
     my $lib = Path::Tiny->new($lib)->relative($cargo_toml->parent)->stringify;
     local $CWD = $cargo_toml->parent->stringify;
@@ -76,6 +78,30 @@ sub build_item
   }
 
   $lib;
+}
+
+sub _deps
+{
+  my($self, $path, $is_root) = @_;
+
+  my @list;
+
+  foreach my $path ($path->children)
+  {
+    next if $is_root && $path->basename eq 'target';
+    next if $path->basename =~ /\.bak$/;
+    next if $path->basename =~ /~$/;
+    if(-d $path)
+    {
+      push @list, $self->_deps($path, 0);
+    }
+    else
+    {
+      push @list, $path;
+    }
+  }
+
+  @list;
 }
 
 1;
