@@ -18,13 +18,13 @@ if($version)
     $rewrite->verbose(1);
     $rewrite->rewrite_versions($version);
   }
-  
+
   # update the Changes file
   {
     my @lines;
     my $fh;
     my $first = 1;
-    open $fh, '<', 'Changes'; 
+    open $fh, '<', 'Changes';
     while(my $line = <$fh>)
     {
       if($first && $line =~ /^\s+-/)
