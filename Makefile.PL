@@ -70,5 +70,5 @@ my %WriteMakefileArgs = (
 WriteMakefile($fbmm->mm_args(%WriteMakefileArgs));
 
 sub MY::postamble {
-  $fbmm->mm_postamble;
+  $fbmm->mm_postamble . "\n\nreadme:lib/FFI/Platypus/Lang/Rust.pm\n\tperl inc/run/readme.pl\n\n";
 }
