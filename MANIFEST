@@ -6,12 +6,13 @@ examples/points.pl
 examples/points.rs
 examples/string.pl
 examples/string.rs
-fbx.json
 inc/My/ModuleBuild.pm
 inc/run/readme.pl
 INSTALL
+lib/FFI/Build/File/Cargo.pm
 lib/FFI/Platypus/Lang/Rust.pm
 LICENSE
+maint/cip-before-install
 maint/releaseprep
 Makefile.PL
 MANIFEST			This list of files
@@ -21,6 +22,9 @@ t/00_diag.t
 t/00_diag.txt
 t/02_types.t
 t/example.t
+t/ffi/Cargo.lock
 t/ffi/Cargo.toml
 t/ffi/src/lib.rs
+t/ffi/test.fbx
+t/ffi_build_file_cargo.t
 t/ffi_platypus_lang_rust.t
