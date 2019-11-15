@@ -8,7 +8,7 @@ addons:
 rust: stable
 
 before_install:
-  - curl -L https://cpanmin.us | perl - -n App::cpanminus local::lib FFI::Platypus Module::Build::FFI File::Which Test::Script IPC::Run3 File::chdir
+  - curl -L https://cpanmin.us | perl - --installdeps .
 
 install:
   - perl -V
