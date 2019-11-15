@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-use v5.12;
+use strict;
 use warnings;
 use FFI::Platypus;
 
@@ -9,4 +9,4 @@ $ffi->lang('Rust');
 $ffi->lib('./libstring.so');
 $ffi->attach(hello_rust => [] => 'string');
 
-say hello_rust();
+print hello_rust(), "\n";

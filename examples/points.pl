@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-use v5.12;
+use strict;
 use warnings;
 use FFI::Platypus;
 
@@ -11,4 +11,4 @@ $ffi->lib('./libpoints.so');
 $ffi->attach(make_point => [ 'i32', 'i32' ] => 'Point');
 $ffi->attach(get_distance => ['Point', 'Point'] => 'f64');
 
-say get_distance(make_point(2,2), make_point(4,4));
+print get_distance(make_point(2,2), make_point(4,4)), "\n";
