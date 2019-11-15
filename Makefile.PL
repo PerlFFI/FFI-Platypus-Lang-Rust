@@ -33,8 +33,8 @@ my %WriteMakefileArgs = (
   CONFIGURE_REQUIRES => {
     'ExtUtils::MakeMaker' => '6.64',
     'File::Which'         => 0,
-    'FFI::Build::MM'      => '0.99',
-    'FFI::CheckLib'       => 0.11,
+    'FFI::Build::MM'      => '1.00',
+    'FFI::CheckLib'       => '0.11',
     'File::chdir'         => 0,
     'Path::Tiny'          => 0,
   },
@@ -44,7 +44,8 @@ my %WriteMakefileArgs = (
   PREREQ_PM => {
     'File::chdir'         => 0,
     'Path::Tiny'          => 0,
-    'FFI::CheckLib'       => 0.11,
+    'FFI::Platypus'       => '1.00',
+    'FFI::CheckLib'       => '0.11',
   },
   TEST_REQUIRES => {
     'Capture::Tiny'       => 0,

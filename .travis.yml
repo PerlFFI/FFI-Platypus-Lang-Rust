@@ -14,9 +14,9 @@ install:
   - perl -V
 
 script:
-  - perl Build.PL
-  - ./Build --verbose
-  - ./Build test --verbose
+  - perl Makefile.PL
+  - make
+  - make test TEST_VERBOSE=1
 
 env:
   - PERL5LIB=$HOME/perl5/lib/perl5 FFI_PLATYPUS=1
