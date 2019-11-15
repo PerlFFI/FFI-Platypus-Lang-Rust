@@ -1,25 +1,35 @@
-language: rust
-
-addons:
-  apt:
-    sources:
-      - perl
-
-rust: stable
+language: minimal
+dist: xenial
+services:
+  - docker
 
 before_install:
-  - curl -L https://cpanmin.us | perl - -n App::cpanminus local::lib FFI::Platypus Module::Build::FFI File::Which Test::Script IPC::Run3 File::chdir
+  - curl https://raw.githubusercontent.com/plicease/cip/master/bin/travis-bootstrap | bash
+  - cip before-install
 
 install:
-  - perl -V
+  - cip diag
+  - cip install
 
 script:
-  - perl Makefile.PL
-  - make
-  - make test TEST_VERBOSE=1
+  - cip script
 
-env:
-  - PERL5LIB=$HOME/perl5/lib/perl5 FFI_PLATYPUS=1
-  - PERL5LIB=$HOME/perl5/lib/perl5 FFI_PLATYPUS_DEBUG_FAKE32=1
-  - PERL5LIB=$HOME/perl5/lib/perl5 FFI_PLATYPUS_NO_ALLOCA=1
-  - PERL5LIB=$HOME/perl5/lib/perl5 FFI_PLATYPUS_DEBUG_FAKE32=1 FFI_PLATYPUS_NO_ALLOCA=1
+jobs:
+  include:
+    - env: CIP_TAG=5.31
+    - env: CIP_TAG=5.30
+    - env: CIP_TAG=5.28
+    - env: CIP_TAG=5.26
+    - env: CIP_TAG=5.24
+    - env: CIP_TAG=5.22
+    - env: CIP_TAG=5.20
+    - env: CIP_TAG=5.18
+    - env: CIP_TAG=5.16
+    - env: CIP_TAG=5.14
+    - env: CIP_TAG=5.12
+    - env: CIP_TAG=5.10
+    - env: CIP_TAG=5.8
+
+cache:
+  directories:
+    - "$HOME/.cip"
