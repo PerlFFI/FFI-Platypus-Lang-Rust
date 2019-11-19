@@ -141,14 +141,14 @@ Which can be called easily from Perl:
    my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
    $ffi->bundle; # see FFI::Build::File::Cargo for how to bundle
                  # your rust code...
-   $ffi->type( opaque => 'Foo' );
+   $ffi->type( 'object(Foo)' => 'CFoo' );
    $ffi->mangler(sub {
      my $symbol = shift;
      "foo_$symbol";
    });
-   $ffi->attach( new     => [] => 'Foo' );
-   $ffi->attach( method1 => ['Foo'] );
-   $ffi->attach( DESTROY => ['Foo'] );
+   $ffi->attach( new     => [] => 'CFoo' );
+   $ffi->attach( method1 => ['CFoo'] );
+   $ffi->attach( DESTROY => ['CFoo'] );
  };
  
  my $foo = Foo->new;
