@@ -25,9 +25,8 @@ impl Person {
 
 #[no_mangle]
 pub extern "C" fn person_new(_class: *const i8, name: *const i8, lucky_number: i32) -> *mut Person {
-    let name = unsafe {
-        CStr::from_ptr(name).to_string_lossy().into_owned()
-    };
+    let name = unsafe { CStr::from_ptr(name) };
+    let name = name.to_string_lossy().into_owned();
     Box::into_raw(Box::new(Person::new(&name, lucky_number)))
 }
 
