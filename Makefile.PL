@@ -64,6 +64,9 @@ my %WriteMakefileArgs = (
       },
       x_IRC => 'irc://irc.perl.org/#native',
     },
+    no_index => {
+      directory => [ 'examples' ],
+    },
   },
   clean => { FILES => 'FFI-Platypus-Lang-Rust-* t/ffi/target examples/*.so examples/*.dll examples/*.dylib examples/Person/ffi/_build examples/Person/ffi/target' },
 );

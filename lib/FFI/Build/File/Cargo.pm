@@ -78,15 +78,21 @@ This module provides the necessary machinery to bundle rust code with your
 Perl extension.  It uses L<FFI::Build> and C<cargo> to do the heavy lifting.
 
 A complete example comes with this distribution in the C<examples/Person>
-directory, incouding tests.  The distribution that uses this pattern works
-just like a regular Pure-Perl or XS distribution, except:
+directory, incouding tests.  You can browse this example on the web here:
+
+L<https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust/tree/master/examples/Person>
+
+The distribution that follows the pattern above works just like a regular
+Pure-Perl or XS distribution, except:
 
 =over 4
 
 =item make
 
-Running the make step builds the Rust library as a dynamic library using
-cargo, and runs the crate's tests if any are available.
+Running the C<make> step builds the Rust library as a dynamic library using
+cargo, and runs the crate's tests if any are available.  It then moves the
+resulting dynamic library in to the appropriate location in C<blib> so that
+it can be found at test and runtime.
 
 =item prove
 
