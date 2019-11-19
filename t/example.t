@@ -33,8 +33,6 @@ subtest 'compile rust' => sub {
       : diag $out;
   }
 
-  dorename();
-
 };
 
 subtest 'perl ffi scripts' => sub {
@@ -62,20 +60,7 @@ subtest 'perl ffi scripts' => sub {
 
 {
   local $CWD = 'examples';
-  unlink $_ for bsd_glob '*.so';
-}
-
-sub dorename
-{
-  if($^O eq 'darwin')
-  {
-    foreach my $old (bsd_glob("*.dylib"))
-    {
-      my $new = $old;
-      $new =~ s{dylib$}{so};
-      rename $old => $new;
-    }
-  }
+  unlink $_ for map { bsd_glob $_ } qw( *.so *.dylib *.dll );
 }
 
 done_testing;

@@ -21,12 +21,18 @@ impl Line {
 }
 
 #[no_mangle]
-pub extern "C" fn make_point(x: i32, y:i32) -> Box<Point> {
-  Box::new(Point { x: x, y: y })
+pub extern "C" fn make_point(x: i32, y:i32) -> *mut Point {
+  Box::into_raw(Box::new(Point { x, y }))
 }
 
 #[no_mangle]
-pub extern "C" fn get_distance(p1: &Point, p2: &Point) -> f64 {
+pub extern "C" fn get_distance(p1: *mut Point, p2: *mut Point) -> f64 {
+  let p1 = unsafe { &*p1 };
+  let p2 = unsafe { &*p2 };
   Line { p1: Point { x: p1.x, y: p1.y }, p2: Point { x: p2.x, y: p2.y } }.length()
 }
 
+#[no_mangle]
+pub extern "C" fn drop_point(p: *mut Point) {
+  unsafe { drop(Box::from_raw(p)) };
+}
