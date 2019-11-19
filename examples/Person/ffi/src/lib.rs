@@ -1,8 +1,9 @@
 use std::ffi::CString;
+use std::ffi::c_void;
 use std::ffi::CStr;
 use std::cell::RefCell;
 
-pub struct Person {
+struct Person {
     name: String,
     lucky_number: i32,
 }
@@ -24,20 +25,22 @@ impl Person {
     }
 }
 
+type CPerson = c_void;
+
 #[no_mangle]
-pub extern "C" fn person_new(_class: *const i8, name: *const i8, lucky_number: i32) -> *mut Person {
+pub extern "C" fn person_new(_class: *const i8, name: *const i8, lucky_number: i32) -> *mut CPerson {
     let name = unsafe { CStr::from_ptr(name) };
     let name = name.to_string_lossy().into_owned();
-    Box::into_raw(Box::new(Person::new(&name, lucky_number)))
+    Box::into_raw(Box::new(Person::new(&name, lucky_number))) as *mut CPerson
 }
 
 #[no_mangle]
-pub extern "C" fn person_name(p: *mut Person) -> *const i8 {
+pub extern "C" fn person_name(p: *mut CPerson) -> *const i8 {
     thread_local! (
         static KEEP: RefCell<Option<CString>> = RefCell::new(None);
     );
 
-    let p = unsafe { &*p };
+    let p = unsafe { &*(p as *mut Person)};
     let name = CString::new(p.get_name()).unwrap();
     let ptr = name.as_ptr();
     KEEP.with(|k| {
@@ -47,15 +50,15 @@ pub extern "C" fn person_name(p: *mut Person) -> *const i8 {
 }
 
 #[no_mangle]
-pub extern "C" fn person_lucky_number(p: *mut Person) -> i32 {
-    let p = unsafe { &*p };
+pub extern "C" fn person_lucky_number(p: *mut CPerson) -> i32 {
+    let p = unsafe { &*(p as *mut Person) };
     p.get_lucky_number()
 }
 
 #[allow(non_snake_case)]
 #[no_mangle]
-pub extern "C" fn person_DESTROY(p: *mut Person) {
-    unsafe { drop(Box::from_raw(p)) };
+pub extern "C" fn person_DESTROY(p: *mut CPerson) {
+    unsafe { drop(Box::from_raw(p as *mut Person)) };
 }
 
 
