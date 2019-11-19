@@ -65,7 +65,7 @@ my %WriteMakefileArgs = (
       x_IRC => 'irc://irc.perl.org/#native',
     },
   },
-  clean => { FILES => 'FFI-Platypus-Lang-Rust-* t/ffi/target examples/*.so' },
+  clean => { FILES => 'FFI-Platypus-Lang-Rust-* t/ffi/target examples/*.so examples/*.dll examples/*.dylib examples/Person/ffi/_build examples/Person/ffi/target' },
 );
 
 WriteMakefile($fbmm->mm_args(%WriteMakefileArgs));
