@@ -150,6 +150,10 @@ Which can be called easily from Perl:
    $ffi->attach( method1 => ['Foo'] );
    $ffi->attach( DESTROY => ['Foo'] );
  };
+ 
+ my $foo = Foo->new;
+ $foo->method1;
+ # $foo->DESTROY implicitly called when it falls out of scope
 
 =head2 returning strings
 

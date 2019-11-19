@@ -139,6 +139,10 @@ DESCRIPTION
        $ffi->attach( method1 => ['Foo'] );
        $ffi->attach( DESTROY => ['Foo'] );
      };
+     
+     my $foo = Foo->new;
+     $foo->method1;
+     # $foo->DESTROY implicitly called when it falls out of scope
 
  returning strings
 

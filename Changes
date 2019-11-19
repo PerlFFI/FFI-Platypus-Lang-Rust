@@ -2,6 +2,9 @@ Revision history for Perl module FFI::Platypus::Lang::Rust
 
   - Fix memory leak in points example (gh#5, gh#10)
   - Added bundle example: examples/Person
+  - Better and more complete documentation for both
+    FFI::Build::File::Cargo and
+    FFI::Platypus::Lang::Rust.
 
 0.07 2019-11-15 13:59:52 -0700
   - Migrate to ExtUtils::MakeMaker
