@@ -191,7 +191,12 @@ METHODS
 EXAMPLES
 
     See the above "SYNOPSIS" or the examples directory that came with this
-    distribution.
+    distribution. This distribution comes with a whole module example of a
+    full object-oriented Rust/Perl extension including Makefile.PL Rust
+    crate, Perl library and tests. It lives in the examples/Person
+    directory, or you can browse it on the web here:
+
+    https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust/tree/master/examples/Person
 
 SUPPORT
 

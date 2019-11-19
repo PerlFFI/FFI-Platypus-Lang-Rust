@@ -225,7 +225,12 @@ sub native_type_map
 =head1 EXAMPLES
 
 See the above L</SYNOPSIS> or the C<examples> directory that came with
-this distribution.
+this distribution.  This distribution comes with a whole module example
+of a full object-oriented Rust/Perl extension including C<Makefile.PL>
+Rust crate, Perl library and tests.  It lives in the C<examples/Person>
+directory, or you can browse it on the web here:
+
+L<https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust/tree/master/examples/Person>
 
 =head1 SUPPORT
 
