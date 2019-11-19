@@ -24,7 +24,7 @@ Rust:
  
  #[no_mangle]
  pub extern "C" fn add(a:i32, b:i32) -> i32 {
-   a+b
+     a+b
  }
 
 Perl:
@@ -73,7 +73,7 @@ directly call from Perl.  For example:
  
  #[no_mangle]
  pub extern "C" fn foo() {
-   bar();
+     bar();
  }
 
 =head2 panics
@@ -137,18 +137,18 @@ Which can be called easily from Perl:
 
  package Foo {
  
-   use FFI::Platypus 1.00;
-   my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
-   $ffi->bundle; # see FFI::Build::File::Cargo for how to bundle
-                 # your rust code...
-   $ffi->type( 'object(Foo)' => 'CFoo' );
-   $ffi->mangler(sub {
-     my $symbol = shift;
-     "foo_$symbol";
-   });
-   $ffi->attach( new     => [] => 'CFoo' );
-   $ffi->attach( method1 => ['CFoo'] );
-   $ffi->attach( DESTROY => ['CFoo'] );
+     use FFI::Platypus 1.00;
+     my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
+     $ffi->bundle; # see FFI::Build::File::Cargo for how to bundle
+                   # your rust code...
+     $ffi->type( 'object(Foo)' => 'CFoo' );
+     $ffi->mangler(sub {
+         my $symbol = shift;
+         "foo_$symbol";
+     });
+     $ffi->attach( new     => [] => 'CFoo' );
+     $ffi->attach( method1 => ['CFoo'] );
+     $ffi->attach( DESTROY => ['CFoo'] );
  };
  
  my $foo = Foo->new;
@@ -186,6 +186,54 @@ From Perl:
  my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
  $ffi->bundle;
  $ffi->attach( return_string => [] => 'string' );
+
+=head2 callbacks
+
+Calling back into Perl from Rust is easy so long as you have the correct
+types defined.  Consider a Rust function that takes a C function pointer:
+
+ use std::ffi::CString;
+ 
+ type PerlLog = extern fn(line: *const i8);
+ 
+ #[no_mangle]
+ pub extern "C" fn rust_log(logf: PerlLog) {
+ 
+     let lines: [&str; 3] = [
+         "Hello from rust!",
+         "Something else.",
+         "The last log line",
+     ];
+ 
+     for line in lines.iter() {
+         // convert string slice to a C style NULL terminated string
+         let line = CString::new(*line).unwrap();
+         logf(line.as_ptr());
+     }
+ }
+
+This can be called with a closure from Perl:
+
+ use FFI::Platypus 1.00;
+ 
+ my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
+ $ffi->bundle;
+ $ffi->type( '(string)->void' => 'PerlLog' );
+ $ffi->attach( rust_log => ['PerlLog'] );
+ 
+ my $perl_log = $ffi->closure(sub {
+     my $message = shift;
+     print "log> $message\n";
+ });
+ 
+ rust_log($perl_log);
+
+Which outputs:
+
+ $ perl callback.pl
+ log> Hello from rust!
+ log> Something else.
+ log> The last log line
 
 =head1 METHODS
 
