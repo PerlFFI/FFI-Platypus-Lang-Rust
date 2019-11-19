@@ -22,5 +22,5 @@ WriteMakefile($fbmm->mm_args(
 ));
  
 sub MY::postamble {
-  $fbmm->mm_postamble;
+     $fbmm->mm_postamble;
 }

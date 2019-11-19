@@ -50,7 +50,7 @@ to learn enough about Rust.  If you are interested, please send me a
 pull request or two on the project's GitHub.
 
 Note that in addition to using pre-compiled Rust libraries, you can
-bundle Rust code with your Perl distribution using
+bundle Rust code with your Perl distribution using L<FFI::Build> and
 L<FFI::Build::File::Cargo>.
 
 =head2 name mangling
@@ -74,6 +74,25 @@ directly call from Perl.  For example:
  #[no_mangle]
  pub extern "C" fn foo() {
    bar();
+ }
+
+=head2 panics
+
+Be careful about code that might C<panic!>.  A C<panic!> across an FFI
+boundary is undefined behavior.  You will want to catch the panic
+with a C<catch_unwind> and map to an appropriate result.
+
+ use std::panic::catch_unwind;
+ 
+ #[no_mangle]
+ pub extern fn oopsie() -> u32 {
+     let result = catch_unwind(|| {
+         might_panic();
+     });
+     match result {
+         OK(_) => 0,
+         Err(_) -> 1,
+     }
  }
 
 =head1 METHODS

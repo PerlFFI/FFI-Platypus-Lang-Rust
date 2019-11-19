@@ -16,25 +16,91 @@ our $VERSION = '0.07';
 
 =head1 NAME
 
-FFI::Build::File::Cargo - Write Rust extensions for Perl!
+FFI::Build::File::Cargo - Write Perl extensions in Rust!
 
 =head1 SYNOPSIS
 
 Crete a rust project in the C<ffi> directory that produces a dynamic library:
 
- nyx% ls -R
- .:
- Cargo.lock  Cargo.toml  src/
- 
- ./src:
- lib.rs
+ $ cargo new --lib --name my_lib ffi
+       Created library `my_lib` package
 
-Everything else works exactly like C.  See L<FFI::Build> for details.
+Add this to your C<ffi/Cargo.toml> file to get dynamic libraries:
+
+ [lib]
+ crate-type = ["dylib"]
+
+Your library goes in C<lib/MyLib.pm>:
+
+ package MyLib;
+ 
+ use FFI::Platypus 1.00;
+ 
+ my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
+ # configure platypus to use the bundled Rust code
+ $ffi->bundle;
+ 
+ ...
+
+Your C<Makefile.PL>:
+
+ use ExtUtils::MakeMaker;
+ use FFI::Build::MM;
+ 
+ my $fbmm = FFI::Build::MM->new;
+ 
+ WriteMakefile($fbmm->mm_args(
+     ABSTRACT       => 'My Lib',
+     DISTNAME       => 'MyLib',
+     NAME           => 'MyLib',
+     VERSION_FROM   => 'lib/MyLib.pm',
+     BUILD_REQUIRES => {
+         'FFI::Build::MM'          => '1.00',
+         'FFI::Build::File::Cargo' => '0.07',
+     },
+     PREREQ_PM => {
+         'FFI::Platypus'             => '1.00',
+         'FFI::Platypus::Lang::Rust' => '0.07',
+     },
+ ));
+ 
+ sub MY::postamble {
+     $fbmm->mm_postamble;
+ }
+
+or alternatively, your C<dist.ini>:
+
+ [FFI::Build]
 
 =head1 DESCRIPTION
 
 This module provides the necessary machinery to bundle rust code with your
 Perl extension.  It uses L<FFI::Build> and C<cargo> to do the heavy lifting.
+
+A complete example comes with this distribution in the C<examples/Person>
+directory, incouding tests.  The distribution that uses this pattern works
+just like a regular Pure-Perl or XS distribution, except:
+
+=over 4
+
+=item make
+
+Running the make step builds the Rust library as a dynamic library using
+cargo, and runs the crate's tests if any are available.
+
+=item prove
+
+If you run the tests using C<prove -l> (that is, without building the
+distribution), Platypus will find the rust crate in the C<ffi> directory,
+build that and use it on the fly.  This makes it easier to test your
+distribution with less explicit building.
+
+=back
+
+This module is smart enough to check the timestamps on the appropriate files
+so the library won't need to be rebuilt if the source files haven't changed.
+
+For more details using Perl + Rust with FFI, see L<FFI::Platypus::Lang::Rust>.
 
 =cut
 
