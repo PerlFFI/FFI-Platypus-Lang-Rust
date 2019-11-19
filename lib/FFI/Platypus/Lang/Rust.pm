@@ -29,9 +29,8 @@ Rust:
 
 Perl:
 
- use FFI::Platypus;
- my $ffi = FFI::Platypus->new;
- $ffi->lang('Rust');
+ use FFI::Platypus 1.00;
+ my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
  $ffi->lib('./libadd.so');
  
  $ffi->attach( add => ['i32', 'i32'] => 'i32' );
@@ -52,15 +51,7 @@ pull request or two on the project's GitHub.
 
 Note that in addition to using pre-compiled Rust libraries, you can
 bundle Rust code with your Perl distribution using
-L<Module::Build::FFI::Rust>.
-
-=head1 CAVEATS
-
-In doing my testing I have been using the pre-release 1.0.0 Alpha
-version of Rust.  Rust is a very fast moving target!  I have rarely
-found examples on the internet that still work by the time I get around
-to trying them.  Fast times.  Hopefully when it becomes stable things
-will change.
+L<FFI::Build::File::Cargo>.
 
 =head2 name mangling
 
