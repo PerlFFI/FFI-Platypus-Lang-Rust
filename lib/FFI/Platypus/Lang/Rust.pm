@@ -161,7 +161,7 @@ Passing in strings is not too hard, you can convert a Rust C<CString> into a Rus
 Return a string is a little tricky because of the ownership model.  Depending on how your
 API works there are probably lot of approaches you might want to take.  One approach would
 be to use thread local storage to store a C<CString> which you return.  It wastes a little
-memory because once the string is copied into Perl scpace it isn't used again, but at least
+memory because once the string is copied into Perl space it isn't used again, but at least
 it doesn't leak memory since it will be freed on the next call to your function.  Best of all
 it doesn't require an C<unsafe> block.
 
