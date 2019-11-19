@@ -1,5 +1,6 @@
 use std::ffi::CString;
 use std::ffi::CStr;
+use std::cell::RefCell;
 
 pub struct Person {
     name: String,
@@ -32,13 +33,16 @@ pub extern "C" fn person_new(_class: *const i8, name: *const i8, lucky_number: i
 
 #[no_mangle]
 pub extern "C" fn person_name(p: *mut Person) -> *const i8 {
-    static mut KEEP: Option<CString> = None;
+    thread_local! (
+        static KEEP: RefCell<Option<CString>> = RefCell::new(None);
+    );
 
     let p = unsafe { &*p };
     let name = CString::new(p.get_name()).unwrap();
     let ptr = name.as_ptr();
-    // not thread safe of course...
-    unsafe { KEEP = Some(name) };
+    KEEP.with(|k| {
+        *k.borrow_mut() = Some(name);
+    });
     ptr
 }
 
