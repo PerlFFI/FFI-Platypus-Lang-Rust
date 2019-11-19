@@ -84,6 +84,96 @@ DESCRIPTION
          }
      }
 
+ structs
+
+    You can map a Rust struct to a Perl object by creating a C OO layer. I
+    suggest using the c_void type aliased to an appropriate name so that
+    the struct can remain private to the Rust code.
+
+    For example, given a Foo struct:
+
+     struct Foo {
+         ...
+     }
+     
+     impl Foo {
+         fn new() -> Foo { ... }
+         fn method1(&self) { ... }
+     }
+
+    You can write a thin C layer:
+
+     type CFoo = c_void;
+     
+     #[no_mangle]
+     pub extern "C" fn foo_new(_class *const i8) -> *mut CFoo {
+         Box::into_raw(Box::new(Foo::new())) as *mut CFoo
+     }
+     
+     #[no_mangle]
+     pub extern "C" fn foo_method1(f: *mut CFoo) {
+         let f = unsafe { &*(f as *mut Foo) };
+         f.method1();
+     }
+     
+     #[allow(non_snake_case)]
+     #[no_mangle]
+     pub extern "C" fn foo_DESTROY(f: *mut CFoo) {
+         unsafe { drop(Box::from_raw(f as *mut Foo)) };
+     }
+
+    Which can be called easily from Perl:
+
+     package Foo {
+     
+       use FFI::Platypus 1.00;
+       my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
+       $ffi->bundle; # see FFI::Build::File::Cargo for how to bundle
+                     # your rust code...
+       $ffi->type( opaque => 'Foo' );
+       $ffi->mangler(sub {
+         my $symbol = shift;
+         "foo_$symbol";
+       });
+       $ffi->attach( new     => [] => 'Foo' );
+       $ffi->attach( method1 => ['Foo'] );
+       $ffi->attach( DESTROY => ['Foo'] );
+     };
+
+ returning strings
+
+    Passing in strings is not too hard, you can convert a Rust CString into
+    a Rust String. Return a string is a little tricky because of the
+    ownership model. Depending on how your API works there are probably lot
+    of approaches you might want to take. One approach would be to use
+    thread local storage to store a CString which you return. It wastes a
+    little memory because once the string is copied into Perl scpace it
+    isn't used again, but at least it doesn't leak memory since it will be
+    freed on the next call to your function. Best of all it doesn't require
+    an unsafe block.
+
+     pub extern "C" fn return_string() -> *const i8 {
+         thread_local! {
+             static KEEP: RefCell<Option<CString>> = RefCell::new(None);
+         }
+     
+         let my_string = String::from("foo");
+         let c_string = CString::new(my_string).unwrap();
+         let ptr = c_string.as_ptr();
+         KEEP.with(|k| {
+             *k.borrow_mut() = Some(c_string);
+         });
+     
+         ptr;
+     }
+
+    From Perl:
+
+     use FFI::Platypus 1.00;
+     my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
+     $ffi->bundle;
+     $ffi->attach( return_string => [] => 'string' );
+
 METHODS
 
     Generally you will not use this class directly, instead interacting
