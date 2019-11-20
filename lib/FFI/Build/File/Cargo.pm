@@ -78,7 +78,7 @@ This module provides the necessary machinery to bundle rust code with your
 Perl extension.  It uses L<FFI::Build> and C<cargo> to do the heavy lifting.
 
 A complete example comes with this distribution in the C<examples/Person>
-directory, incouding tests.  You can browse this example on the web here:
+directory, including tests.  You can browse this example on the web here:
 
 L<https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust/tree/master/examples/Person>
 
