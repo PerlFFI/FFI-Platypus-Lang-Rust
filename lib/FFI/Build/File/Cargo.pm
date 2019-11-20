@@ -12,7 +12,7 @@ use base qw( FFI::Build::File::Base );
 use constant default_suffix => '.toml';
 use constant default_encoding => ':utf8';
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 =head1 NAME
 

@@ -7,7 +7,7 @@ use File::Which qw( which );
 use File::Spec;
 use Env qw( @PATH );
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 =head1 NAME
 
