@@ -290,7 +290,7 @@ SEE ALSO
 
       The Core Platypus documentation.
 
-    Module::Build::FFI::Rust
+    FFI::Build::File::Cargo
 
       Bundle Rust code with your FFI / Perl extension.
 

@@ -325,7 +325,7 @@ improve things.
 
 The Core Platypus documentation.
 
-=item L<Module::Build::FFI::Rust>
+=item L<FFI::Build::File::Cargo>
 
 Bundle Rust code with your FFI / Perl extension.
 
