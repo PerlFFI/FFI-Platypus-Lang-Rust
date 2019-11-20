@@ -4,7 +4,6 @@ Changes
 CONTRIBUTING
 examples/add.pl
 examples/add.rs
-examples/Person/ffi/Cargo.lock
 examples/Person/ffi/Cargo.toml
 examples/Person/ffi/src/lib.rs
 examples/Person/lib/Person.pm

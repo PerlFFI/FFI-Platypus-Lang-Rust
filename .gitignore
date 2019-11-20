@@ -13,3 +13,4 @@
 *.bundle
 *.dylib
 /fbx.json
+examples/Person/ffi/Cargo.lock
