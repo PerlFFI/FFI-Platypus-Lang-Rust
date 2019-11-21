@@ -335,6 +335,10 @@ Bundle Rust code with your FFI / Perl extension.
 
 Graham Ollis E<lt>plicease@cpan.orgE<gt>
 
+Contributors:
+
+Andrew Grangaard (SPAZM)
+
 =head1 COPYRIGHT AND LICENSE
 
 This software is copyright (c) 2015 by Graham Ollis.
