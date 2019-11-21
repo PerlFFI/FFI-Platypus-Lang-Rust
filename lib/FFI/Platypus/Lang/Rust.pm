@@ -295,7 +295,7 @@ L<https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust/issues>
 =head1 CONTRIBUTING
 
 If you have implemented a new feature or fixed a bug then you may make a
-pull reequest on this project's GitHub repository:
+pull request on this project's GitHub repository:
 
 L<https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust/issues>
 
