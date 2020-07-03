@@ -282,7 +282,7 @@ of a full object-oriented Rust/Perl extension including C<Makefile.PL>
 Rust crate, Perl library and tests.  It lives in the C<examples/Person>
 directory, or you can browse it on the web here:
 
-L<https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust/tree/master/examples/Person>
+L<https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/tree/main/examples/Person>
 
 =head1 SUPPORT
 
@@ -290,14 +290,14 @@ If something does not work as advertised, or the way that you think it
 should, or if you have a feature request, please open an issue on this
 project's GitHub issue tracker:
 
-L<https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust/issues>
+L<https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/issues>
 
 =head1 CONTRIBUTING
 
 If you have implemented a new feature or fixed a bug then you may make a
 pull request on this project's GitHub repository:
 
-L<https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust/issues>
+L<https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/issues>
 
 Caution: if you do this too frequently I may nominate you as the new
 maintainer.  Extreme caution: if you like that sort of thing.
