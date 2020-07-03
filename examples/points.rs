@@ -11,12 +11,12 @@ struct Line { p1: Point, p2: Point }
 
 impl Line {
   pub fn length(&self) -> f64 {
-  
+
     let xdiff = self.p1.x - self.p2.x;
     let ydiff = self.p1.y - self.p2.y;
-    
+
     ((xdiff.pow(2) + ydiff.pow(2)) as f64).sqrt()
-  
+
   }
 }
 

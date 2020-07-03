@@ -55,12 +55,12 @@ my %WriteMakefileArgs = (
     'meta-spec' => { version => 2 },
     resources => {
       bugtracker => {
-        web => 'https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust/issues',
+        web => 'https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/issues',
       },
       repository => {
         type => 'git',
-        url => 'https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust.git',
-        web => 'https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust',
+        url => 'https://github.com/PerlFFI/FFI-Platypus-Lang-Rust.git',
+        web => 'https://github.com/PerlFFI/FFI-Platypus-Lang-Rust',
       },
       x_IRC => 'irc://irc.perl.org/#native',
     },

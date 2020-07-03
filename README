@@ -249,7 +249,7 @@ EXAMPLES
     crate, Perl library and tests. It lives in the examples/Person
     directory, or you can browse it on the web here:
 
-    https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust/tree/master/examples/Person
+    https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/tree/main/examples/Person
 
 SUPPORT
 
@@ -257,14 +257,14 @@ SUPPORT
     should, or if you have a feature request, please open an issue on this
     project's GitHub issue tracker:
 
-    https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust/issues
+    https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/issues
 
 CONTRIBUTING
 
     If you have implemented a new feature or fixed a bug then you may make
     a pull request on this project's GitHub repository:
 
-    https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust/issues
+    https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/issues
 
     Caution: if you do this too frequently I may nominate you as the new
     maintainer. Extreme caution: if you like that sort of thing.

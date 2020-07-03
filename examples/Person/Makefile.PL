@@ -1,8 +1,8 @@
 use ExtUtils::MakeMaker;
 use FFI::Build::MM;
- 
+
 my $fbmm = FFI::Build::MM->new;
- 
+
 WriteMakefile($fbmm->mm_args(
     ABSTRACT       => 'My Person class',
     DISTNAME       => 'Person',
@@ -23,7 +23,7 @@ WriteMakefile($fbmm->mm_args(
         'Test2::V0' => '0',
     },
 ));
- 
+
 sub MY::postamble {
      $fbmm->mm_postamble;
 }

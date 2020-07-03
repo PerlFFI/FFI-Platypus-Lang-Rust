@@ -80,7 +80,7 @@ Perl extension.  It uses L<FFI::Build> and C<cargo> to do the heavy lifting.
 A complete example comes with this distribution in the C<examples/Person>
 directory, including tests.  You can browse this example on the web here:
 
-L<https://github.com/Perl5-FFI/FFI-Platypus-Lang-Rust/tree/master/examples/Person>
+L<https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/tree/main/examples/Person>
 
 The distribution that follows the pattern above works just like a regular
 Pure-Perl or XS distribution, except:
