@@ -1,5 +1,4 @@
 .gitattributes
-.travis.yml
 Changes
 CONTRIBUTING
 examples/add.pl
