@@ -177,7 +177,7 @@ it doesn't require an C<unsafe> block.
          *k.borrow_mut() = Some(c_string);
      });
  
-     ptr;
+     ptr
  }
 
 From Perl:
