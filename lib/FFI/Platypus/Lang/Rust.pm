@@ -14,7 +14,7 @@ use Env qw( @PATH );
 
 Rust:
 
- #![crate_type = "dylib"]
+ #![crate_type = "cdylib"]
  
  // compile with: rustc add.rs
  

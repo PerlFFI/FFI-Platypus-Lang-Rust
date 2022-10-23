@@ -1,4 +1,4 @@
-#![crate_type = "dylib"]
+#![crate_type = "cdylib"]
 
 use std::ffi::CString;
 

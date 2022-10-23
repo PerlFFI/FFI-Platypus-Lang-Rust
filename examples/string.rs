@@ -1,4 +1,4 @@
-#![crate_type = "dylib"]
+#![crate_type = "cdylib"]
 
 // compile with: rustc string.rs
 // borrowed from:

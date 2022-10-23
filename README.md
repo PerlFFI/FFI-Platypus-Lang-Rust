@@ -7,7 +7,7 @@ Documentation and tools for using Platypus with the Rust programming language
 Rust:
 
 ```
-#![crate_type = "dylib"]
+#![crate_type = "cdylib"]
 
 // compile with: rustc add.rs
 
