@@ -1,7 +1,7 @@
-use strict;
-use warnings;
+use Test2::V0 -no_srand => 1;
 use Config;
-use Test::More tests => 1;
+
+eval { require 'Test/More.pm' };
 
 # This .t file is generated.
 # make changes instead to dist.ini
@@ -19,7 +19,7 @@ $modules{$_} = $_ for qw(
   File::Which
   File::chdir
   Path::Tiny
-  Test::More
+  Test2::V0
   Test::Script
 );
 
@@ -67,7 +67,7 @@ if(@keys > 0)
 
 diag sprintf $format, 'perl', "$] $^O $Config{archname}";
 
-foreach my $module (@modules)
+foreach my $module (sort @modules)
 {
   my $pm = "$module.pm";
   $pm =~ s{::}{/}g;
@@ -90,4 +90,6 @@ if($post_diag)
 }
 
 spacer;
+
+done_testing;
 
