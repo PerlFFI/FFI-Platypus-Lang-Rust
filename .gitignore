@@ -12,3 +12,4 @@
 /t/ffi/target
 /examples/Person/ffi/_build
 /examples/Person/ffi/target
+*.swp

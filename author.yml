@@ -9,6 +9,7 @@ pod_spelling_system:
    - Grangaard
    - SPAZM
    - libffi
+   - ABI
 
 pod_coverage:
   skip: 0

@@ -54,32 +54,75 @@ Note that in addition to using pre-compiled Rust libraries, you can
 bundle Rust code with your Perl distribution using [FFI::Build](https://metacpan.org/pod/FFI::Build) and
 [FFI::Build::File::Cargo](https://metacpan.org/pod/FFI::Build::File::Cargo).
 
-## name mangling
+# EXAMPLES
 
-Rust names are "mangled" to handle features such as modules and the fact
-that some characters in Rust names are illegal machine code symbol
-names. For now that means that you have to tell Rust not to mangle the
-names of functions that you are going to call from Perl.  You can
-accomplish that like this:
+The examples in this discussion are bundled with this distribution and
+can be found in the `examples` directory.
 
-```
-#[no_mangle]
-pub extern "C" fn foo() {
-}
-```
+## Passing and returning integers
 
-You do not need to add this decoration to functions that you do not
-directly call from Perl.  For example:
+### Rust Source
 
 ```
-fn bar() {
-}
+#![crate_type = "cdylib"]
+
+// compile with: rustc add.rs
 
 #[no_mangle]
-pub extern "C" fn foo() {
-    bar();
+pub extern "C" fn add(a: i32, b: i32) -> i32 {
+    a + b
 }
 ```
+
+### Perl Source
+
+```perl
+use FFI::Platypus 2.00;
+use FFI::CheckLib qw( find_lib_or_die );
+use File::Basename qw( dirname );
+
+my $ffi = FFI::Platypus->new( api => 2, lang => 'Rust' );
+$ffi->lib(
+    find_lib_or_die(
+        lib        => 'add',
+        libpath    => [dirname __FILE__],
+        systempath => [],
+    )
+);
+
+$ffi->attach( add => ['i32', 'i32'] => 'i32' );
+
+print add(1,2), "\n";  # prints 3
+```
+
+### Execute
+
+```
+$ rustc add.rs
+$ perl add.pl
+3
+```
+
+### Notes
+
+Basic types like integers and floating points are the easiest to pass
+across the FFI boundary.  The Platypus Rust language plugin (this module)
+provides the basic types used by Rust (for example: `bool`, `i32`, `u64`,
+`f64`, `isize` and others) will all work as a Rust programmer would expect.
+This is nice because you don't have to think about what the equivalent types
+would be in C when you are writing your Perl extension in Rust.
+
+Rust symbols are "mangled" by default, which means that you cannot use
+the name of the function from the source code without knowing what the
+mangled name is.  Rust provides a function attribute `#[no_mangle]`
+which will tell the compiler not to mangle the name, making lookup of
+the symbol possible from other programming languages like Perl.
+
+Rust functions do not use the same ABI as C by default, so if you want
+to be able to call Rust functions from Perl they need to be declared
+as `extern "C"` as in this example.
+
+# ADVANCED
 
 ## panics
 
@@ -233,11 +276,11 @@ pub extern "C" fn rust_log(logf: PerlLog) {
 This can be called with a closure from Perl:
 
 ```perl
-use FFI::Platypus 1.00;
+use FFI::Platypus 2.00;
 use FFI::CheckLib qw( find_lib_or_die );
 use File::Basename qw( dirname );
 
-my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
+my $ffi = FFI::Platypus->new( api => 2, lang => 'Rust' );
 $ffi->lib(
     find_lib_or_die(
         lib        => 'callback',
