@@ -275,6 +275,15 @@ directory, or you can browse it on the web here:
 
 [https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/tree/main/examples/Person](https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/tree/main/examples/Person)
 
+# CAVEATS
+
+- The `bool` type
+
+    As of this writing, the `bool` type is in practice always a signed
+    8 bit integer, but this has not been guaranteed by the Rust specification.
+    This module assumes that it is a `sint8` type, but if that ever
+    changes this module will need to be updated.
+
 # SEE ALSO
 
 - [FFI::Platypus](https://metacpan.org/pod/FFI::Platypus)

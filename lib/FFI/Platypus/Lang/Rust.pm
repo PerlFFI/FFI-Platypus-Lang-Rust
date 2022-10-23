@@ -263,6 +263,7 @@ sub native_type_map
     binary64 => 'double',   #  "    "  "     "    "  "
     f32      => 'float',
     f64      => 'double',
+    bool     => 'sint8',    # in practice, but not guaranteed by spec
     usize    => FFI::Platypus->type_meta('size_t')->{ffi_type},
     isize    => FFI::Platypus->type_meta('ssize_t')->{ffi_type},
   },
@@ -279,6 +280,19 @@ Rust crate, Perl library and tests.  It lives in the C<examples/Person>
 directory, or you can browse it on the web here:
 
 L<https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/tree/main/examples/Person>
+
+=head1 CAVEATS
+
+=over 4
+
+=item The C<bool> type
+
+As of this writing, the C<bool> type is in practice always a signed
+8 bit integer, but this has not been guaranteed by the Rust specification.
+This module assumes that it is a C<sint8> type, but if that ever
+changes this module will need to be updated.
+
+=back
 
 =head1 SEE ALSO
 
