@@ -26,7 +26,7 @@ Crete a rust project in the C<ffi> directory that produces a dynamic library:
 Add this to your C<ffi/Cargo.toml> file to get dynamic libraries:
 
  [lib]
- crate-type = ["dylib"]
+ crate-type = ["cdylib"]
 
 Your library goes in C<lib/MyLib.pm>:
 
