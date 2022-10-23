@@ -11,21 +11,16 @@ my $post_diag;
 
 $modules{$_} = $_ for qw(
   Capture::Tiny
-  Env
   ExtUtils::MakeMaker
   FFI::Build::File::Base
   FFI::Build::MM
   FFI::CheckLib
   FFI::Platypus
-  File::Copy
-  File::Glob
-  File::Spec
   File::Which
   File::chdir
   Path::Tiny
   Test::More
   Test::Script
-  constant
 );
 
 
