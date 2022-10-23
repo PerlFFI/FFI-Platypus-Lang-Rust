@@ -2,24 +2,35 @@ use strict;
 use warnings;
 use Config;
 use Test::More tests => 1;
-BEGIN {
-  my @modules;
-  eval q{
-    require FindBin;
-    require File::Spec;
-    1;
-  } || die $@;
-  do {
-    my $fh;
-    if(open($fh, '<', File::Spec->catfile($FindBin::Bin, '00_diag.pre.txt')))
-    {
-      @modules = <$fh>;
-      close $fh;
-      chomp @modules;
-    }
-  };
-  eval qq{ require $_ } for @modules;
-};
+
+# This .t file is generated.
+# make changes instead to dist.ini
+
+my %modules;
+my $post_diag;
+
+$modules{$_} = $_ for qw(
+  Capture::Tiny
+  Env
+  ExtUtils::MakeMaker
+  FFI::Build::File::Base
+  FFI::Build::MM
+  FFI::CheckLib
+  FFI::Platypus
+  File::Copy
+  File::Glob
+  File::Spec
+  File::Which
+  File::chdir
+  Path::Tiny
+  Test::More
+  Test::Script
+  constant
+);
+
+
+
+my @modules = sort keys %modules;
 
 sub spacer ()
 {
@@ -29,15 +40,6 @@ sub spacer ()
 }
 
 pass 'okay';
-
-my @modules;
-do {
-  my $fh;
-  open($fh, '<', File::Spec->catfile($FindBin::Bin, '00_diag.txt'));
-  @modules = <$fh>;
-  close $fh;
-  chomp @modules;
-};
 
 my $max = 1;
 $max = $_ > $max ? $_ : $max for map { length $_ } @modules;
@@ -68,16 +70,15 @@ if(@keys > 0)
   spacer;
 }
 
-diag sprintf $format, 'perl ', $^V;
-
-require(File::Spec->catfile($FindBin::Bin, '00_diag.pl'))
-  if -e File::Spec->catfile($FindBin::Bin, '00_diag.pl');
+diag sprintf $format, 'perl', "$] $^O $Config{archname}";
 
 foreach my $module (@modules)
 {
-  if(eval qq{ require $module; 1 })
+  my $pm = "$module.pm";
+  $pm =~ s{::}{/}g;
+  if(eval { require $pm; 1 })
   {
-    my $ver = eval qq{ \$$module\::VERSION };
+    my $ver = eval { $module->VERSION };
     $ver = 'undef' unless defined $ver;
     diag sprintf $format, $module, $ver;
   }
@@ -85,6 +86,12 @@ foreach my $module (@modules)
   {
     diag sprintf $format, $module, '-';
   }
+}
+
+if($post_diag)
+{
+  spacer;
+  $post_diag->();
 }
 
 spacer;
