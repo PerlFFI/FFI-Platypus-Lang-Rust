@@ -9,8 +9,6 @@ Rust:
 ```
 #![crate_type = "cdylib"]
 
-// compile with: rustc add.rs
-
 #[no_mangle]
 pub extern "C" fn add(a: i32, b: i32) -> i32 {
     a + b
@@ -59,14 +57,12 @@ bundle Rust code with your Perl distribution using [FFI::Build](https://metacpan
 The examples in this discussion are bundled with this distribution and
 can be found in the `examples` directory.
 
-## Passing and returning integers
+## Passing and Returning Integers
 
 ### Rust Source
 
 ```
 #![crate_type = "cdylib"]
-
-// compile with: rustc add.rs
 
 #[no_mangle]
 pub extern "C" fn add(a: i32, b: i32) -> i32 {
@@ -121,6 +117,97 @@ the symbol possible from other programming languages like Perl.
 Rust functions do not use the same ABI as C by default, so if you want
 to be able to call Rust functions from Perl they need to be declared
 as `extern "C"` as in this example.
+
+We also set the "crate type" to `cdylib` in the first line to tell the
+Rust compiler to generate a dynamic library that will be consumed by
+a non-Rust language like Perl.
+
+## String Arguments
+
+### Rust Source
+
+```perl
+#![crate_type = "cdylib"]
+
+use std::ffi::CStr;
+
+#[no_mangle]
+pub extern "C" fn how_many_characters(s: *const i8) -> isize {
+    if s.is_null() {
+        return -1;
+    }
+
+    let s = unsafe { CStr::from_ptr(s) };
+
+    match s.to_str() {
+        Ok(s) => s.chars().count() as isize,
+        Err(_) => -2,
+    }
+}
+```
+
+### Perl Source
+
+```perl
+use FFI::Platypus 2.00;
+use FFI::CheckLib qw( find_lib_or_die );
+use File::Basename qw( dirname );
+
+my $ffi = FFI::Platypus->new( api => 2, lang => 'Rust' );
+$ffi->lib(
+    find_lib_or_die(
+        lib        => 'argument',
+        libpath    => [dirname __FILE__],
+        systempath => [],
+    )
+);
+
+$ffi->attach( how_many_characters => ['string'] => 'isize' );
+
+print how_many_characters(undef), "\n";           # prints -1
+print how_many_characters("frooble bits"), "\n";  # prints 12
+```
+
+### Execute
+
+```
+$ rustc argument.rs
+$ perl argument.pl
+-1
+12
+```
+
+### Notes
+
+Strings are considerably more complicated for a number of reasons,
+but for passing them into Rust code the main challenge is that the
+representation is different from what C uses.  C Uses NULL terminated
+strings and Rust uses a pointer and size combination that allows
+NULLs inside strings.  Perls internal representation of strings is
+actually closer to what Rust uses, but when Perl talks to other
+languages it typically uses C Strings.
+
+Getting a Rust string slice `&str` requires a few stems
+
+- We have to ensure the C pointer is not `NULL`
+
+    We return `-1` to indicate an error here.  As we can see from the
+    calling Perl code passing an `undef` from Perl is equivalent to
+    passing in `NULL` from C.
+
+- Wrap using `Cstr`
+
+    We then wrap the pointer using an `unsafe` block.  Even though
+    we know at this point that the pointer cannot be `NULL` it could
+    technically be pointing to uninitialized or unaddressable memory.
+    This `unsafe` block is unfortunately necessary, though it is
+    relatively isolated so it is easy to reason about and review.
+
+- Convert to UTF-8
+
+    If the string that we passed in is valid UTF-8 we can convert
+    it to a `&str` using `to_str` and compute the length of the
+    string.  Otherwise, we return -2 error.
 
 # ADVANCED
 

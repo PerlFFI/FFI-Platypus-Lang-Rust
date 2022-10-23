@@ -41,7 +41,7 @@ L<FFI::Build::File::Cargo>.
 The examples in this discussion are bundled with this distribution and
 can be found in the C<examples> directory.
 
-=head2 Passing and returning integers
+=head2 Passing and Returning Integers
 
 =head3 Rust Source
 
@@ -75,6 +75,63 @@ the symbol possible from other programming languages like Perl.
 Rust functions do not use the same ABI as C by default, so if you want
 to be able to call Rust functions from Perl they need to be declared
 as C<extern "C"> as in this example.
+
+We also set the "crate type" to C<cdylib> in the first line to tell the
+Rust compiler to generate a dynamic library that will be consumed by
+a non-Rust language like Perl.
+
+=head2 String Arguments
+
+=head3 Rust Source
+
+# EXAMPLE: examples/string/argument.rs
+
+=head3 Perl Source
+
+# EXAMPLE: examples/string/argument.pl
+
+=head3 Execute
+
+ $ rustc argument.rs
+ $ perl argument.pl
+ -1
+ 12
+
+=head3 Notes
+
+Strings are considerably more complicated for a number of reasons,
+but for passing them into Rust code the main challenge is that the
+representation is different from what C uses.  C Uses NULL terminated
+strings and Rust uses a pointer and size combination that allows
+NULLs inside strings.  Perls internal representation of strings is
+actually closer to what Rust uses, but when Perl talks to other
+languages it typically uses C Strings.
+
+Getting a Rust string slice C<&str> requires a few stems
+
+=over 4
+
+=item We have to ensure the C pointer is not C<NULL>
+
+We return C<-1> to indicate an error here.  As we can see from the
+calling Perl code passing an C<undef> from Perl is equivalent to
+passing in C<NULL> from C.
+
+=item Wrap using C<Cstr>
+
+We then wrap the pointer using an C<unsafe> block.  Even though
+we know at this point that the pointer cannot be C<NULL> it could
+technically be pointing to uninitialized or unaddressable memory.
+This C<unsafe> block is unfortunately necessary, though it is
+relatively isolated so it is easy to reason about and review.
+
+=item Convert to UTF-8
+
+If the string that we passed in is valid UTF-8 we can convert
+it to a C<&str> using C<to_str> and compute the length of the
+string.  Otherwise, we return -2 error.
+
+=back
 
 =head1 ADVANCED
 
