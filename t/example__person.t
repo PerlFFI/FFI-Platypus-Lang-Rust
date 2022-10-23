@@ -1,5 +1,6 @@
 use Test2::V0 -no_srand => 1;
 use File::chdir;
+use Path::Tiny qw( path );
 use Config;
 use Capture::Tiny qw( capture );
 
@@ -25,5 +26,7 @@ subtest 'build and test' => sub {
   run_ok $Config{make}, 'realclean';
 
 };
+
+path('examples/Person/ffi/target')->remove_tree;
 
 done_testing;

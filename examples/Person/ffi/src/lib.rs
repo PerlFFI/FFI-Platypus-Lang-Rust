@@ -65,7 +65,6 @@ pub extern "C" fn person_DESTROY(p: *mut CPerson) {
 #[cfg(test)]
 mod tests {
 
-    use std::ffi::CString;
     use std::ffi::CStr;
 
     #[test]
@@ -76,11 +75,12 @@ mod tests {
         assert_eq!(plicease.get_lucky_number(), 42);
     }
 
+    const TEST_CLASS: *const u8 = b"Person\0" as *const u8;
+    const TEST_NAME: *const u8 = b"Graham Ollis\0" as *const u8;
+
     #[test]
     fn c_lib_works() {
-        let class = CString::new("Person");
-        let name = CString::new("Graham Ollis");
-        let plicease = crate::person_new(class.unwrap().as_ptr(), name.unwrap().as_ptr(), 42);
+        let plicease = crate::person_new(TEST_CLASS as *const i8, TEST_NAME as *const i8, 42);
         assert_eq!(unsafe { CStr::from_ptr(crate::person_name(plicease)).to_string_lossy().into_owned() },  "Graham Ollis");
         assert_eq!(crate::person_lucky_number(plicease), 42);
     }
