@@ -7,8 +7,6 @@ use Capture::Tiny qw( capture_merged );
 
 my $rustc = which 'rustc';
 
-plan skip_all => 'Test requirest a rust compiler' unless $rustc;
-
 subtest 'compile rust' => sub {
   local $CWD = 'examples';
 
