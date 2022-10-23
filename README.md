@@ -422,6 +422,73 @@ Sometimes you just want to return a static NULL terminated string
 from Rust to Perl.  This can sometimes be useful for returning
 error messages.
 
+## Callbacks
+
+### Rust Source
+
+```perl
+#![crate_type = "cdylib"]
+
+use std::ffi::CString;
+
+type PerlLog = extern "C" fn(line: *const i8);
+
+#[no_mangle]
+pub extern "C" fn rust_log(logf: PerlLog) {
+    let lines: [&str; 3] = ["Hello from rust!", "Something else.", "The last log line"];
+
+    for line in lines.iter() {
+        // convert string slice to a C style NULL terminated string
+        let line = CString::new(*line).unwrap();
+        logf(line.as_ptr());
+    }
+}
+```
+
+### Perl Source
+
+```perl
+use FFI::Platypus 2.00;
+use FFI::CheckLib qw( find_lib_or_die );
+use File::Basename qw( dirname );
+
+my $ffi = FFI::Platypus->new( api => 2, lang => 'Rust' );
+$ffi->lib(
+    find_lib_or_die(
+        lib        => 'callback',
+        libpath    => [dirname __FILE__],
+        systempath => [],
+    )
+);
+
+$ffi->type( '(string)->void' => 'PerlLog' );
+$ffi->attach( rust_log => ['PerlLog'] );
+
+my $perl_log = $ffi->closure(sub {
+    my $message = shift;
+    print "log> $message\n";
+});
+
+rust_log($perl_log);
+```
+
+### Execute
+
+```
+$ rustc callback.rs
+$ perl callback.pl
+log> Hello from rust!
+log> Something else.
+log> The last log line
+```
+
+### Notes
+
+Calling back into Perl from Rust is easy, so long as you have the correct
+types defined.  The above Rust function takes a C function pointer.  We
+can crate a Platypus closure object from Perl from a plain Perl sub and
+pass the closure into Rust.
+
 # ADVANCED
 
 ## panics
@@ -511,68 +578,6 @@ $foo->method1;
 # $foo->DESTROY implicitly called when it falls out of scope
 ```
 
-## callbacks
-
-Calling back into Perl from Rust is easy so long as you have the correct
-types defined.  Consider a Rust function that takes a C function pointer:
-
-```perl
-#![crate_type = "cdylib"]
-
-use std::ffi::CString;
-
-// compile with: rustc callback.rs
-
-type PerlLog = extern "C" fn(line: *const i8);
-
-#[no_mangle]
-pub extern "C" fn rust_log(logf: PerlLog) {
-    let lines: [&str; 3] = ["Hello from rust!", "Something else.", "The last log line"];
-
-    for line in lines.iter() {
-        // convert string slice to a C style NULL terminated string
-        let line = CString::new(*line).unwrap();
-        logf(line.as_ptr());
-    }
-}
-```
-
-This can be called with a closure from Perl:
-
-```perl
-use FFI::Platypus 2.00;
-use FFI::CheckLib qw( find_lib_or_die );
-use File::Basename qw( dirname );
-
-my $ffi = FFI::Platypus->new( api => 2, lang => 'Rust' );
-$ffi->lib(
-    find_lib_or_die(
-        lib        => 'callback',
-        libpath    => [dirname __FILE__],
-        systempath => [],
-    )
-);
-
-$ffi->type( '(string)->void' => 'PerlLog' );
-$ffi->attach( rust_log => ['PerlLog'] );
-
-my $perl_log = $ffi->closure(sub {
-    my $message = shift;
-    print "log> $message\n";
-});
-
-rust_log($perl_log);
-```
-
-Which outputs:
-
-```
-$ perl callback.pl
-log> Hello from rust!
-log> Something else.
-log> The last log line
-```
-
 # METHODS
 
 Generally you will not use this class directly, instead interacting with
@@ -588,16 +593,6 @@ my $hashref = FFI::Platypus::Lang::Rust->native_type_map;
 This returns a hash reference containing the native aliases for the Rust
 programming languages.  That is the keys are native Rust types and the
 values are libffi native types.
-
-# EXAMPLES
-
-See the above ["SYNOPSIS"](#synopsis) or the `examples` directory that came with
-this distribution.  This distribution comes with a whole module example
-of a full object-oriented Rust/Perl extension including `Makefile.PL`
-Rust crate, Perl library and tests.  It lives in the `examples/Person`
-directory, or you can browse it on the web here:
-
-[https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/tree/main/examples/Person](https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/tree/main/examples/Person)
 
 # CAVEATS
 

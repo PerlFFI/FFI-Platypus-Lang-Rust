@@ -2,8 +2,6 @@
 
 use std::ffi::CString;
 
-// compile with: rustc callback.rs
-
 type PerlLog = extern "C" fn(line: *const i8);
 
 #[no_mangle]
