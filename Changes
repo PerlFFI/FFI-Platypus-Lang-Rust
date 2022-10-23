@@ -1,4 +1,6 @@
-Revision history for Perl module FFI::Platypus::Lang::Rust
+Revision history for {{$dist->name}}
+
+{{$NEXT}}
 
 0.09 2019-11-20 11:12:37 -0700
   - Document callbacks.
