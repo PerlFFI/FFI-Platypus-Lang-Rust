@@ -2,10 +2,4 @@
 
 set -ex
 
-cip sudo apt-get update
-cip sudo apt-get install libffi-dev
-
 cip pkg rust
-
-# pre-install configure-requires
-cip bash -c 'cpanm -n ExtUtils::MakeMaker FFI::Build::MM FFI::CheckLib File::Which File::chdir Path::Tiny'
