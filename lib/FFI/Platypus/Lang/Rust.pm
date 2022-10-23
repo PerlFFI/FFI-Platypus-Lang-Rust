@@ -133,6 +133,9 @@ string.  Otherwise, we return -2 error.
 
 =back
 
+(This example is based on one provided in the
+L<Rust FFI Omnibus|http://jakegoulding.com/rust-ffi-omnibus/string_arguments/>)
+
 =head2 Returning allocated strings
 
 =head3 Rust Source
@@ -142,6 +145,12 @@ string.  Otherwise, we return -2 error.
 =head3 Perl Source
 
 # EXAMPLE: examples/string/return/return.pl
+
+=head3 Execute
+
+ $ rustc return.rs
+ $ perl return.pl
+ 💣 na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na Batman! 💣
 
 =head3 Notes
 
@@ -158,6 +167,46 @@ Before freeing it though we cast it into a Perl string.
 In order to hide the complexities from caller of our
 C<theme_song_generate> function, we use a function wrapper to
 do all of that for us.
+
+(This example is based on one provided in the
+L<Rust FFI Omnibus|http://jakegoulding.com/rust-ffi-omnibus/string_return/>)
+
+=head2 Returning allocated strings, but keeping ownership
+
+=head3 Rust Source
+
+# EXAMPLE: examples/string/return/keep.rs
+
+=head3 Perl Source
+
+# EXAMPLE: examples/string/return/keep.pl
+
+=head3 Execute
+
+ $ rustc keep.rs
+ $ perl keep.pl
+ 💣 na Batman! 💣
+ 💣 na na Batman! 💣
+ 💣 na na na Batman! 💣
+ 💣 na na na na Batman! 💣
+ 💣 na na na na na Batman! 💣
+ 💣 na na na na na na Batman! 💣
+ 💣 na na na na na na na Batman! 💣
+ 💣 na na na na na na na na Batman! 💣
+ 💣 na na na na na na na na na Batman! 💣
+ 💣 na na na na na na na na na na Batman! 💣
+
+=head3 Notes
+
+For frequently called functions with smaller strings it may make more
+sense to keep ownership of the string and just return a pointer.  Perl
+makes its own copy on return anyway when you use the C<string> type.
+
+In this example we use thread local storage to keep the C<CString>
+until the next call when it will be freed.  Since we are using thread
+local storage, it should even be safe to use this interface from a
+threaded Perl program (although you should probably not be using
+threaded Perl).
 
 =head1 ADVANCED
 

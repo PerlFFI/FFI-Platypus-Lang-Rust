@@ -209,6 +209,9 @@ Getting a Rust string slice `&str` requires a few stems
     it to a `&str` using `to_str` and compute the length of the
     string.  Otherwise, we return -2 error.
 
+(This example is based on one provided in the
+[Rust FFI Omnibus](http://jakegoulding.com/rust-ffi-omnibus/string_arguments/))
+
 ## Returning allocated strings
 
 ### Rust Source
@@ -267,6 +270,14 @@ $ffi->attach( theme_song_generate => ['u8']     => 'opaque' => sub {
 print theme_song_generate(42), "\n";
 ```
 
+### Execute
+
+```
+$ rustc return.rs
+$ perl return.pl
+💣 na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na na Batman! 💣
+```
+
 ### Notes
 
 The big challenge of returning strings from Rust into Perl is
@@ -282,6 +293,93 @@ Before freeing it though we cast it into a Perl string.
 In order to hide the complexities from caller of our
 `theme_song_generate` function, we use a function wrapper to
 do all of that for us.
+
+(This example is based on one provided in the
+[Rust FFI Omnibus](http://jakegoulding.com/rust-ffi-omnibus/string_return/))
+
+## Returning allocated strings, but keeping ownership
+
+### Rust Source
+
+```perl
+#![crate_type = "cdylib"]
+
+use std::cell::RefCell;
+use std::ffi::CString;
+use std::iter;
+
+#[no_mangle]
+pub extern "C" fn theme_song_generate(length: u8) -> *const i8 {
+
+    thread_local! {
+        static KEEP: RefCell<Option<CString>> = RefCell::new(None);
+    }
+
+    let mut song = String::from("💣 ");
+    song.extend(iter::repeat("na ").take(length as usize));
+    song.push_str("Batman! 💣");
+
+    let c_str_song = CString::new(song).unwrap();
+
+    let ptr = c_str_song.as_ptr();
+
+    KEEP.with(|k| {
+        *k.borrow_mut() = Some(c_str_song);
+    });
+
+    ptr
+}
+```
+
+### Perl Source
+
+```perl
+use FFI::Platypus 2.00;
+use FFI::CheckLib qw( find_lib_or_die );
+use File::Basename qw( dirname );
+
+my $ffi = FFI::Platypus->new( api => 2, lang => 'Rust' );
+$ffi->lib(
+    find_lib_or_die(
+        lib        => 'keep',
+        libpath    => [dirname __FILE__],
+        systempath => [],
+    )
+);
+
+$ffi->attach( theme_song_generate => ['u8'] => 'string' );
+
+print theme_song_generate($_), "\n" for 1..10;
+```
+
+### Execute
+
+```
+$ rustc keep.rs
+$ perl keep.pl
+💣 na Batman! 💣
+💣 na na Batman! 💣
+💣 na na na Batman! 💣
+💣 na na na na Batman! 💣
+💣 na na na na na Batman! 💣
+💣 na na na na na na Batman! 💣
+💣 na na na na na na na Batman! 💣
+💣 na na na na na na na na Batman! 💣
+💣 na na na na na na na na na Batman! 💣
+💣 na na na na na na na na na na Batman! 💣
+```
+
+### Notes
+
+For frequently called functions with smaller strings it may make more
+sense to keep ownership of the string and just return a pointer.  Perl
+makes its own copy on return anyway when you use the `string` type.
+
+In this example we use thread local storage to keep the `CString`
+until the next call when it will be freed.  Since we are using thread
+local storage, it should even be safe to use this interface from a
+threaded Perl program (although you should probably not be using
+threaded Perl).
 
 # ADVANCED
 
