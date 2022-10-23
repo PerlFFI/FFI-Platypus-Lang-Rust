@@ -133,6 +133,32 @@ string.  Otherwise, we return -2 error.
 
 =back
 
+=head2 Returning allocated strings
+
+=head3 Rust Source
+
+# EXAMPLE: examples/string/return/return.rs
+
+=head3 Perl Source
+
+# EXAMPLE: examples/string/return/return.pl
+
+=head3 Notes
+
+The big challenge of returning strings from Rust into Perl is
+handling the ownership.  In this example we have a C API implemented
+in Rust that returns a C NULL terminated string, but we have to
+pass it back into Rust in order to deallocate it when we are done.
+
+Unfortunately Platypus' C<string> type assumes that the callee
+retains ownership of the returned string, so we have to get the
+pointer instead as an C<opaque> so that we can later free it.
+Before freeing it though we cast it into a Perl string.
+
+In order to hide the complexities from caller of our
+C<theme_song_generate> function, we use a function wrapper to
+do all of that for us.
+
 =head1 ADVANCED
 
 =head2 panics

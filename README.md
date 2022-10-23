@@ -209,6 +209,80 @@ Getting a Rust string slice `&str` requires a few stems
     it to a `&str` using `to_str` and compute the length of the
     string.  Otherwise, we return -2 error.
 
+## Returning allocated strings
+
+### Rust Source
+
+```perl
+#![crate_type = "cdylib"]
+
+use std::ffi::CString;
+use std::iter;
+
+#[no_mangle]
+pub extern "C" fn theme_song_generate(length: u8) -> *mut i8 {
+    let mut song = String::from("💣 ");
+    song.extend(iter::repeat("na ").take(length as usize));
+    song.push_str("Batman! 💣");
+
+    let c_str_song = CString::new(song).unwrap();
+    c_str_song.into_raw()
+}
+
+#[no_mangle]
+pub extern "C" fn theme_song_free(s: *mut i8) {
+    if s.is_null() {
+        return;
+    }
+    unsafe { CString::from_raw(s) };
+}
+```
+
+### Perl Source
+
+```perl
+use FFI::Platypus 2.00;
+use FFI::CheckLib qw( find_lib_or_die );
+use File::Basename qw( dirname );
+
+my $ffi = FFI::Platypus->new( api => 2, lang => 'Rust' );
+$ffi->lib(
+    find_lib_or_die(
+        lib        => 'return',
+        libpath    => [dirname __FILE__],
+        systempath => [],
+    )
+);
+
+$ffi->attach( theme_song_free     => ['opaque'] => 'void'   );
+
+$ffi->attach( theme_song_generate => ['u8']     => 'opaque' => sub {
+    my($xsub, $length) = @_;
+    my $ptr = $xsub->($length);
+    my $str = $ffi->cast( 'opaque' => 'string', $ptr );
+    theme_song_free($ptr);
+    $str;
+});
+
+print theme_song_generate(42), "\n";
+```
+
+### Notes
+
+The big challenge of returning strings from Rust into Perl is
+handling the ownership.  In this example we have a C API implemented
+in Rust that returns a C NULL terminated string, but we have to
+pass it back into Rust in order to deallocate it when we are done.
+
+Unfortunately Platypus' `string` type assumes that the callee
+retains ownership of the returned string, so we have to get the
+pointer instead as an `opaque` so that we can later free it.
+Before freeing it though we cast it into a Perl string.
+
+In order to hide the complexities from caller of our
+`theme_song_generate` function, we use a function wrapper to
+do all of that for us.
+
 # ADVANCED
 
 ## panics

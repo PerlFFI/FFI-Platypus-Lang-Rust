@@ -7,7 +7,7 @@ use Capture::Tiny qw( capture_merged );
 
 my $rustc = which 'rustc';
 
-foreach my $dir (qw( examples examples/old examples/string ))
+foreach my $dir (qw( examples examples/old examples/string examples/string/return ))
 {
 
   subtest $dir => sub {
