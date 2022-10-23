@@ -1,4 +1,4 @@
-# FFI::Platypus::Lang::Rust ![linux](https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/workflows/linux/badge.svg)
+# FFI::Platypus::Lang::Rust ![static](https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/workflows/static/badge.svg) ![linux](https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/workflows/linux/badge.svg)
 
 Documentation and tools for using Platypus with the Rust programming language
 
