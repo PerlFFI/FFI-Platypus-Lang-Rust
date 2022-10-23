@@ -2,12 +2,11 @@ package Person;
 
 use strict;
 use warnings;
-use 5.014;
-use FFI::Platypus 1.00;
+use FFI::Platypus 2.00;
 
-our $VERSION = '1.00';
+our $VERSION = '2.00';
 
-my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
+my $ffi = FFI::Platypus->new( api => 2, lang => 'Rust' );
 
 # use the bundled code as a library
 $ffi->bundle;
