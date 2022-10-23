@@ -1,6 +1,9 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+  - Adding bool type.  As noted in the CAVEATS, this is in
+    practice always a sint8, but not technically guaranteed
+    by the spec (gh#25, gh#33)
   - Use cdylib in examples and in implementation as that is
     preferred for calling from C now (gh#16, gh#31)
   - Tests are build with --release by default, just like the
