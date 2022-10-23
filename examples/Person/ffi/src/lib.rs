@@ -1,7 +1,7 @@
-use std::ffi::CString;
+use std::cell::RefCell;
 use std::ffi::c_void;
 use std::ffi::CStr;
-use std::cell::RefCell;
+use std::ffi::CString;
 
 struct Person {
     name: String,
@@ -28,7 +28,11 @@ impl Person {
 type CPerson = c_void;
 
 #[no_mangle]
-pub extern "C" fn person_new(_class: *const i8, name: *const i8, lucky_number: i32) -> *mut CPerson {
+pub extern "C" fn person_new(
+    _class: *const i8,
+    name: *const i8,
+    lucky_number: i32,
+) -> *mut CPerson {
     let name = unsafe { CStr::from_ptr(name) };
     let name = name.to_string_lossy().into_owned();
     Box::into_raw(Box::new(Person::new(&name, lucky_number))) as *mut CPerson
@@ -36,11 +40,11 @@ pub extern "C" fn person_new(_class: *const i8, name: *const i8, lucky_number: i
 
 #[no_mangle]
 pub extern "C" fn person_name(p: *mut CPerson) -> *const i8 {
-    thread_local! (
+    thread_local!(
         static KEEP: RefCell<Option<CString>> = RefCell::new(None);
     );
 
-    let p = unsafe { &*(p as *mut Person)};
+    let p = unsafe { &*(p as *mut Person) };
     let name = CString::new(p.get_name()).unwrap();
     let ptr = name.as_ptr();
     KEEP.with(|k| {
@@ -61,7 +65,6 @@ pub extern "C" fn person_DESTROY(p: *mut CPerson) {
     unsafe { drop(Box::from_raw(p as *mut Person)) };
 }
 
-
 #[cfg(test)]
 mod tests {
 
@@ -81,7 +84,14 @@ mod tests {
     #[test]
     fn c_lib_works() {
         let plicease = crate::person_new(TEST_CLASS as *const i8, TEST_NAME as *const i8, 42);
-        assert_eq!(unsafe { CStr::from_ptr(crate::person_name(plicease)).to_string_lossy().into_owned() },  "Graham Ollis");
+        assert_eq!(
+            unsafe {
+                CStr::from_ptr(crate::person_name(plicease))
+                    .to_string_lossy()
+                    .into_owned()
+            },
+            "Graham Ollis"
+        );
         assert_eq!(crate::person_lucky_number(plicease), 42);
     }
 }
