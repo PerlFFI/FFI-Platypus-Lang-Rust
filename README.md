@@ -210,18 +210,17 @@ Calling back into Perl from Rust is easy so long as you have the correct
 types defined.  Consider a Rust function that takes a C function pointer:
 
 ```perl
+#![crate_type = "cdylib"]
+
 use std::ffi::CString;
 
-type PerlLog = extern fn(line: *const i8);
+// compile with: rustc callback.rs
+
+type PerlLog = extern "C" fn(line: *const i8);
 
 #[no_mangle]
 pub extern "C" fn rust_log(logf: PerlLog) {
-
-    let lines: [&str; 3] = [
-        "Hello from rust!",
-        "Something else.",
-        "The last log line",
-    ];
+    let lines: [&str; 3] = ["Hello from rust!", "Something else.", "The last log line"];
 
     for line in lines.iter() {
         // convert string slice to a C style NULL terminated string
@@ -235,9 +234,18 @@ This can be called with a closure from Perl:
 
 ```perl
 use FFI::Platypus 1.00;
+use FFI::CheckLib qw( find_lib_or_die );
+use File::Basename qw( dirname );
 
 my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
-$ffi->bundle;
+$ffi->lib(
+    find_lib_or_die(
+        lib        => 'callback',
+        libpath    => [dirname __FILE__],
+        systempath => [],
+    )
+);
+
 $ffi->type( '(string)->void' => 'PerlLog' );
 $ffi->attach( rust_log => ['PerlLog'] );
 
