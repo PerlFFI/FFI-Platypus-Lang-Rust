@@ -233,6 +233,31 @@ Sometimes you just want to return a static NULL terminated string
 from Rust to Perl.  This can sometimes be useful for returning
 error messages.
 
+=head2 Callbacks
+
+=head3 Rust Source
+
+# EXAMPLE: examples/callback.rs
+
+=head3 Perl Source
+
+# EXAMPLE: examples/callback.pl
+
+=head3 Execute
+
+ $ rustc callback.rs
+ $ perl callback.pl
+ log> Hello from rust!
+ log> Something else.
+ log> The last log line
+
+=head3 Notes
+
+Calling back into Perl from Rust is easy, so long as you have the correct
+types defined.  The above Rust function takes a C function pointer.  We
+can crate a Platypus closure object from Perl from a plain Perl sub and
+pass the closure into Rust.
+
 =head1 ADVANCED
 
 =head2 panics
@@ -314,24 +339,6 @@ Which can be called easily from Perl:
  $foo->method1;
  # $foo->DESTROY implicitly called when it falls out of scope
 
-=head2 callbacks
-
-Calling back into Perl from Rust is easy so long as you have the correct
-types defined.  Consider a Rust function that takes a C function pointer:
-
-# EXAMPLE: examples/callback.rs
-
-This can be called with a closure from Perl:
-
-# EXAMPLE: examples/callback.pl
-
-Which outputs:
-
- $ perl callback.pl
- log> Hello from rust!
- log> Something else.
- log> The last log line
-
 =head1 METHODS
 
 Generally you will not use this class directly, instead interacting with
@@ -371,16 +378,6 @@ sub native_type_map
 }
 
 1;
-
-=head1 EXAMPLES
-
-See the above L</SYNOPSIS> or the C<examples> directory that came with
-this distribution.  This distribution comes with a whole module example
-of a full object-oriented Rust/Perl extension including C<Makefile.PL>
-Rust crate, Perl library and tests.  It lives in the C<examples/Person>
-directory, or you can browse it on the web here:
-
-L<https://github.com/PerlFFI/FFI-Platypus-Lang-Rust/tree/main/examples/Person>
 
 =head1 CAVEATS
 
