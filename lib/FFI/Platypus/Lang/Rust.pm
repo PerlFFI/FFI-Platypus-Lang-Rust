@@ -14,24 +14,11 @@ use Env qw( @PATH );
 
 Rust:
 
- #![crate_type = "cdylib"]
- 
- // compile with: rustc add.rs
- 
- #[no_mangle]
- pub extern "C" fn add(a:i32, b:i32) -> i32 {
-     a+b
- }
+# EXAMPLE: examples/add.rs
 
 Perl:
 
- use FFI::Platypus 1.00;
- my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
- $ffi->lib('./libadd.so');
- 
- $ffi->attach( add => ['i32', 'i32'] => 'i32' );
- 
- print add(1,2), "\n";  # prints 3
+# EXAMPLE: examples/add.pl
 
 =head1 DESCRIPTION
 
