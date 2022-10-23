@@ -11,6 +11,7 @@ my $post_diag;
 
 $modules{$_} = $_ for qw(
   Capture::Tiny
+  Env::ShellWords
   ExtUtils::MakeMaker
   FFI::Build::File::Base
   FFI::Build::MM

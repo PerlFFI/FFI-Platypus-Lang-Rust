@@ -8,6 +8,7 @@ use FFI::CheckLib 0.11 qw( find_lib_or_exit );
 use File::Copy qw( copy );
 use Path::Tiny ();
 use FFI::Build::File::Base 1.00 ();
+use Env::ShellWords qw( @PERL_FFI_CARGO_FLAGS );
 use base qw( FFI::Build::File::Base );
 use constant default_suffix => '.toml';
 use constant default_encoding => ':utf8';
@@ -146,12 +147,16 @@ sub build_item
     local $CWD = $cargo_toml->parent->stringify;
     print "+cd $CWD\n";
 
-    my @cmd = ('cargo', 'test');
+    my @cargo_flags = defined $ENV{PERL_FFI_CARGO_FLAGS}
+      ? @PERL_FFI_CARGO_FLAGS
+      : ('--release');
+
+    my @cmd = ('cargo', 'test', @cargo_flags);
     print "+@cmd\n";
     system @cmd;
     exit 2 if $?;
 
-    @cmd = ('cargo', 'build', '--release');
+    @cmd = ('cargo', 'build', @cargo_flags);
     print "+@cmd\n";
     system @cmd;
     exit 2 if $?;
@@ -201,6 +206,26 @@ sub _deps
 }
 
 1;
+
+=head1 ENVIRONMENT
+
+=over 4
+
+=item C<PERL_FFI_CARGO_FLAGS>
+
+This environment variable changes the flags that are passed into
+C<cargo test> and C<cargo build>.
+
+By default this module passes C<--release> into both C<cargo test> and
+C<cargo build>.  It does this so that you will get optimized libraries
+when your Perl extension is installed.  You may require a different
+profile when testing so you can, for example, set this environment
+variable to something else:
+
+ $ export PERL_FFI_CARGO_FLAGS='--profile test'
+ $ ...
+
+=back
 
 =head1 SEE ALSO
 

@@ -1,6 +1,13 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+  - Tests are build with --release by default, just like the
+    runtime cdylib, so that the Rust code doesn't have to be
+    compiled twice (gh#26, gh#28)
+  - The PERL_FFI_CARGO_FLAGS environment variable can be used
+    to change the flags passed into cargo test and cargo build
+    this way you can use a different profile if you choose
+    (gh#28)
 
 0.09 2019-11-20 11:12:37 -0700
   - Document callbacks.
