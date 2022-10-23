@@ -208,6 +208,9 @@ local storage, it should even be safe to use this interface from a
 threaded Perl program (although you should probably not be using
 threaded Perl).
 
+(This example is based on one provided in the
+L<Rust FFI Omnibus|http://jakegoulding.com/rust-ffi-omnibus/string_arguments/>)
+
 =head1 ADVANCED
 
 =head2 panics
@@ -288,38 +291,6 @@ Which can be called easily from Perl:
  my $foo = Foo->new;
  $foo->method1;
  # $foo->DESTROY implicitly called when it falls out of scope
-
-=head2 returning strings
-
-Passing in strings is not too hard, you can convert a Rust C<CString> into a Rust C<String>.
-Return a string is a little tricky because of the ownership model.  Depending on how your
-API works there are probably lot of approaches you might want to take.  One approach would
-be to use thread local storage to store a C<CString> which you return.  It wastes a little
-memory because once the string is copied into Perl space it isn't used again, but at least
-it doesn't leak memory since it will be freed on the next call to your function.  Best of all
-it doesn't require an C<unsafe> block.
-
- pub extern "C" fn return_string() -> *const i8 {
-     thread_local! {
-         static KEEP: RefCell<Option<CString>> = RefCell::new(None);
-     }
- 
-     let my_string = String::from("foo");
-     let c_string = CString::new(my_string).unwrap();
-     let ptr = c_string.as_ptr();
-     KEEP.with(|k| {
-         *k.borrow_mut() = Some(c_string);
-     });
- 
-     ptr
- }
-
-From Perl:
-
- use FFI::Platypus 1.00;
- my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
- $ffi->bundle;
- $ffi->attach( return_string => [] => 'string' );
 
 =head2 callbacks
 
@@ -413,6 +384,14 @@ The Core Platypus documentation.
 =item L<FFI::Build::File::Cargo>
 
 Bundle Rust code with your FFI / Perl extension.
+
+=item L<The Rust FFI Omnibus|http://jakegoulding.com/rust-ffi-omnibus/>
+
+Includes a number of examples of calling Rust from other languages.
+
+=item L<The Rustonomicon - Foreign Function Interface|https://doc.rust-lang.org/nomicon/ffi.html>
+
+Detailed Rust documentation on crossing the FFI barrier.
 
 =back
 

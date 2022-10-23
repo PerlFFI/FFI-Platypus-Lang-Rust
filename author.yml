@@ -12,6 +12,7 @@ pod_spelling_system:
    - ABI
    - NULLs
    - unaddressable
+   - Rustonomicon
 
 pod_coverage:
   skip: 0
