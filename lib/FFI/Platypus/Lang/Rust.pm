@@ -258,6 +258,35 @@ types defined.  The above Rust function takes a C function pointer.  We
 can crate a Platypus closure object from Perl from a plain Perl sub and
 pass the closure into Rust.
 
+=head2 Slice arguments
+
+=head3 Rust Source
+
+# EXAMPLE: examples/slice.rs
+
+=head3 Perl Source
+
+# EXAMPLE: examples/slice.rs
+
+=head3 Execute
+
+ $ rustc slice.rs
+ $ perl slice.pl
+ -1
+ 12
+
+=head3 Notes
+
+A Rust slice is a pointer to a chunk of homogeneous data, and the
+number of elements in the slice.  We can pass these two pieces in
+from Perl and combine them into a slice in Rust.
+
+This example sums the even numbers from a slice and returns the
+result.
+
+(This example is based on one provided in the
+L<Rust FFI Omnibus|http://jakegoulding.com/rust-ffi-omnibus/slice_arguments/>)
+
 =head1 ADVANCED
 
 =head2 panics
