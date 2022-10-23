@@ -10,7 +10,7 @@ my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust');
 $ffi->lang('Rust');
 $ffi->lib(
     find_lib_or_die(
-        lib        => 'string',
+        lib        => 'static',
         libpath    => [dirname __FILE__],
         systempath => [],
     )

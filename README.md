@@ -384,6 +384,44 @@ threaded Perl).
 (This example is based on one provided in the
 [Rust FFI Omnibus](http://jakegoulding.com/rust-ffi-omnibus/string_arguments/))
 
+## Return static strings
+
+### Rust Source
+
+```
+#![crate_type = "cdylib"]
+
+#[no_mangle]
+pub extern "C" fn hello_rust() -> *const u8 {
+    "Hello, world!\0".as_ptr()
+}
+```
+
+### Perl Source
+
+```
+#![crate_type = "cdylib"]
+
+#[no_mangle]
+pub extern "C" fn hello_rust() -> *const u8 {
+    "Hello, world!\0".as_ptr()
+}
+```
+
+### Execute
+
+```
+$ rustc static.rs
+$ perl static.pl
+Hello, world!
+```
+
+### Notes
+
+Sometimes you just want to return a static NULL terminated string
+from Rust to Perl.  This can sometimes be useful for returning
+error messages.
+
 # ADVANCED
 
 ## panics
@@ -587,6 +625,10 @@ directory, or you can browse it on the web here:
 - [The Rustonomicon - Foreign Function Interface](https://doc.rust-lang.org/nomicon/ffi.html)
 
     Detailed Rust documentation on crossing the FFI barrier.
+
+- [The Rust Programming Language - Unsafe Rust](https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html)
+
+    Unsafe Rust in the Rust Programming Language book.
 
 # AUTHOR
 

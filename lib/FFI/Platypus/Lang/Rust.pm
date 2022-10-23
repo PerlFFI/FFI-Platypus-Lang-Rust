@@ -211,6 +211,28 @@ threaded Perl).
 (This example is based on one provided in the
 L<Rust FFI Omnibus|http://jakegoulding.com/rust-ffi-omnibus/string_arguments/>)
 
+=head2 Return static strings
+
+=head3 Rust Source
+
+# EXAMPLE: examples/string/return/static.rs
+
+=head3 Perl Source
+
+# EXAMPLE: examples/string/return/static.rs
+
+=head3 Execute
+
+ $ rustc static.rs
+ $ perl static.pl
+ Hello, world!
+
+=head3 Notes
+
+Sometimes you just want to return a static NULL terminated string
+from Rust to Perl.  This can sometimes be useful for returning
+error messages.
+
 =head1 ADVANCED
 
 =head2 panics
@@ -392,6 +414,10 @@ Includes a number of examples of calling Rust from other languages.
 =item L<The Rustonomicon - Foreign Function Interface|https://doc.rust-lang.org/nomicon/ffi.html>
 
 Detailed Rust documentation on crossing the FFI barrier.
+
+=item L<The Rust Programming Language - Unsafe Rust|https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html>
+
+Unsafe Rust in the Rust Programming Language book.
 
 =back
 
