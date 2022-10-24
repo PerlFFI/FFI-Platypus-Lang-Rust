@@ -394,26 +394,34 @@ If you look at just the test, then you can't even tell that the implementation
 for our Person class is in Rust, which is good because your users shouldn't
 have to care!
 
-=head1 ADVANCED
+=head2 Panic!
 
-=head2 panics
+=head3 Rust Source
 
-Be careful about code that might C<panic!>.  A C<panic!> across an FFI
-boundary is undefined behavior.  You will want to catch the panic
-with a C<catch_unwind> and map to an appropriate result.
+# EXAMPLE: examples/panic.rs
 
- use std::panic::catch_unwind;
- 
- #[no_mangle]
- pub extern fn oopsie() -> u32 {
-     let result = catch_unwind(|| {
-         might_panic();
-     });
-     match result {
-         OK(_) => 0,
-         Err(_) -> 1,
-     }
- }
+=head3 Perl Source
+
+# EXAMPLE: examples/panic.pl
+
+=head3 Execute
+
+ $ perl panic.pl                     
+ thread '<unnamed>' panicked at 'oops!', panic.rs:7:9
+ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ -1
+ 5
+
+=head3 Notes
+
+Be cautious about code that might C<panic!>.  A C<panic!> across the FFI
+boundary is undefined behavior and usually results in a crash.  You will
+want to catch the panic with a C<catch_unwind> and map to an appropriate
+error result.  In this example, we have a function that returns the
+integer passed in divided by 2.  It does not like odd numbers though and
+will panic.  So we catch the panic and return -1 to indicate an error.
+As you can see from the run we also get a rather ugly diagnostic, but
+at least our program didn't crash!
 
 =head1 METHODS
 
