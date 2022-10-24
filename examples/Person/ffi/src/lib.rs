@@ -75,7 +75,7 @@ pub extern "C" fn person_lucky_number(p: *mut CPerson) -> i32 {
 #[allow(non_snake_case)]
 #[no_mangle]
 pub extern "C" fn person_DESTROY(p: *mut CPerson) {
-    unsafe { drop(Box::from_raw(p as *mut Person)) };
+    unsafe { Box::from_raw(p as *mut Person) };
 }
 
 #[cfg(test)]

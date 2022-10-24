@@ -616,7 +616,7 @@ use FFI::Platypus::Record;
 
 use overload
   '""' => sub { shift->as_string },
-  bool => sub { 1 }, fallback => 1;  
+  bool => sub { 1 }, fallback => 1;
 
 record_layout_1($ffi, qw(
   u32 x
@@ -658,6 +658,199 @@ They just get allocated and freed on the stack.
 (This example is based on one provided in the
 [Rust FFI Omnibus](http://jakegoulding.com/rust-ffi-omnibus/tuples/))
 
+## Objects
+
+### Rust Source
+
+```perl
+use std::cell::RefCell;
+use std::ffi::c_void;
+use std::ffi::CStr;
+use std::ffi::CString;
+
+struct Person {
+    name: String,
+    lucky_number: i32,
+}
+
+impl Person {
+    fn new(name: &str, lucky_number: i32) -> Person {
+        Person {
+            name: String::from(name),
+            lucky_number: lucky_number,
+        }
+    }
+
+    fn get_name(&self) -> String {
+        String::from(&self.name)
+    }
+
+    fn set_name(&mut self, new: &str) {
+        self.name = new.to_string();
+    }
+
+    fn get_lucky_number(&self) -> i32 {
+        self.lucky_number
+    }
+}
+
+type CPerson = c_void;
+
+#[no_mangle]
+pub extern "C" fn person_new(
+    _class: *const i8,
+    name: *const i8,
+    lucky_number: i32,
+) -> *mut CPerson {
+    let name = unsafe { CStr::from_ptr(name) };
+    let name = name.to_string_lossy().into_owned();
+    Box::into_raw(Box::new(Person::new(&name, lucky_number))) as *mut CPerson
+}
+
+#[no_mangle]
+pub extern "C" fn person_name(p: *mut CPerson) -> *const i8 {
+    thread_local!(
+        static KEEP: RefCell<Option<CString>> = RefCell::new(None);
+    );
+
+    let p = unsafe { &*(p as *mut Person) };
+    let name = CString::new(p.get_name()).unwrap();
+    let ptr = name.as_ptr();
+    KEEP.with(|k| {
+        *k.borrow_mut() = Some(name);
+    });
+    ptr
+}
+
+#[no_mangle]
+pub extern "C" fn person_rename(p: *mut CPerson, new: *const i8) {
+    let new = unsafe { CStr::from_ptr(new) };
+    let p = unsafe { &mut *(p as *mut Person) };
+    if let Ok(new) = new.to_str() {
+        p.set_name(new);
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn person_lucky_number(p: *mut CPerson) -> i32 {
+    let p = unsafe { &*(p as *mut Person) };
+    p.get_lucky_number()
+}
+
+#[allow(non_snake_case)]
+#[no_mangle]
+pub extern "C" fn person_DESTROY(p: *mut CPerson) {
+    unsafe { Box::from_raw(p as *mut Person) };
+}
+
+#[cfg(test)]
+mod test;
+```
+
+### Perl Source
+
+Main class:
+
+```perl
+package Person;
+
+use strict;
+use warnings;
+use FFI::Platypus 2.00;
+
+our $VERSION = '2.00';
+
+my $ffi = FFI::Platypus->new( api => 2, lang => 'Rust' );
+
+# use the bundled code as a library
+$ffi->bundle;
+
+# use the person_ prefix
+$ffi->mangler(sub {
+    my $symbol = shift;
+    return "person_$symbol";
+});
+
+# Create a custom type mapping for the person_t (C) and Person (perl)
+# classes.
+$ffi->type( 'object(Person)' => 'person_t' );
+
+$ffi->attach( new          => [ 'string', 'string', 'i32' ] => 'person_t' );
+$ffi->attach( name         => [ 'person_t' ] => 'string' );
+$ffi->attach( rename       => [ 'person_t', 'string' ] );
+$ffi->attach( lucky_number => [ 'person_t' ] => 'i32' );
+$ffi->attach( DESTROY      => [ 'person_t' ] );
+
+1;
+```
+
+Test:
+
+\# examples/Person/t/basic.t
+
+### Execute
+
+```
+$ prove -lvm t/basic.t
+t/basic.t ..
+# Seeded srand with seed '20221023' from local date.
+ok 1
+ok 2
+ok 3
+1..3
+ok
+All tests successful.
+Files=1, Tests=3,  0 wallclock secs ( 0.02 usr  0.00 sys +  0.19 cusr  0.05 csys =  0.26 CPU)
+Result: PASS
+```
+
+### Notes
+
+This example includes excerpts from a full `Person` dist which you can
+find in the `examples/Person` directory of this distribution.  You can
+install it like a normal Perl distribution using [ExtUtils::MakeMaker](https://metacpan.org/pod/ExtUtils::MakeMaker),
+or you can simply run the test file by using [App::Prove](https://metacpan.org/pod/App::Prove).  That is
+because we are using [FFI::Build](https://metacpan.org/pod/FFI::Build) and [FFI::Build::File::Cargo](https://metacpan.org/pod/FFI::Build::File::Cargo) to
+build the Rust parts for us, which know how to work in either mode.
+There are some stuff that we don't show you here for brevity: the
+`Makefile.PL` for example, and also the rust tests in `ffi/src/test.rs`
+which test the Rust crate by calling both its Rust and C interface.
+
+What we have done here is created a Rust `struct` and then written
+C wrappers to create, query and modify the object.  We've also created
+a destructor to free the object when we are done with it.
+
+In terms of naming conventions, we use `person_` prefix to denote that
+these are methods for the Person class that we are creating.  This is
+a common convention in C, where the only namespaces are adding prefixes
+like this.  We also break the convention of using snake case for the
+destructor `person_DESTROY` because that will make it easier to bind
+to from Perl.
+
+When we creat the object we use `Box::new` and `Box::into_raw` to
+create the object on the heap, and to return the opaque pointer back
+to Perl.
+
+For methods we can convert the raw pointers back into a Person `struct`
+using `&*(p as *mut Person)` inside an `unsafe` block.  In the case
+of `person_rename` we need a mutable version so we use `&mut *(p as *mut Person)`
+instead.
+
+Finally when we are done with the object we can free it by simply
+calling `Box::from_raw`.  When it falls out of scope it will be freed.
+
+On the Perl side, we use the `mangler` method to prepend all symbols
+with the `person_` prefix, so that we can attach with just the method
+name.
+
+We also create a Platypus type for `object(Person)` and give it the
+alias `person_t`.  Now we can use it as an argument and return type.
+This is really a pointer to an opaque (to perl) `struct`.
+
+If you look at just the test, then you can't even tell that the implementation
+for our Person class is in Rust, which is good because your users shouldn't
+have to care!
+
 # ADVANCED
 
 ## panics
@@ -679,72 +872,6 @@ pub extern fn oopsie() -> u32 {
         Err(_) -> 1,
     }
 }
-```
-
-## structs
-
-You can map a Rust struct to a Perl object by creating a C OO layer.
-I suggest using the `c_void` type aliased to an appropriate name so
-that the struct can remain private to the Rust code.
-
-For example, given a Foo struct:
-
-```
-struct Foo {
-    ...
-}
-
-impl Foo {
-    fn new() -> Foo { ... }
-    fn method1(&self) { ... }
-}
-```
-
-You can write a thin C layer:
-
-```
-type CFoo = c_void;
-
-#[no_mangle]
-pub extern "C" fn foo_new(_class *const i8) -> *mut CFoo {
-    Box::into_raw(Box::new(Foo::new())) as *mut CFoo
-}
-
-#[no_mangle]
-pub extern "C" fn foo_method1(f: *mut CFoo) {
-    let f = unsafe { &*(f as *mut Foo) };
-    f.method1();
-}
-
-#[allow(non_snake_case)]
-#[no_mangle]
-pub extern "C" fn foo_DESTROY(f: *mut CFoo) {
-    unsafe { drop(Box::from_raw(f as *mut Foo)) };
-}
-```
-
-Which can be called easily from Perl:
-
-```perl
-package Foo {
-
-    use FFI::Platypus 1.00;
-    my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
-    $ffi->bundle; # see FFI::Build::File::Cargo for how to bundle
-                  # your rust code...
-    $ffi->type( 'object(Foo)' => 'CFoo' );
-    $ffi->mangler(sub {
-        my $symbol = shift;
-        "foo_$symbol";
-    });
-    $ffi->attach( new     => [] => 'CFoo' );
-    $ffi->attach( method1 => ['CFoo'] );
-    $ffi->attach( DESTROY => ['CFoo'] );
-};
-
-my $foo = Foo->new;
-$foo->method1;
-# $foo->DESTROY implicitly called when it falls out of scope
 ```
 
 # METHODS

@@ -317,6 +317,83 @@ They just get allocated and freed on the stack.
 (This example is based on one provided in the
 L<Rust FFI Omnibus|http://jakegoulding.com/rust-ffi-omnibus/tuples/>)
 
+=head2 Objects
+
+=head3 Rust Source
+
+# EXAMPLE: examples/Person/ffi/src/lib.rs
+
+=head3 Perl Source
+
+Main class:
+
+# EXAMPLE: examples/Person/lib/Person.pm
+
+Test:
+
+# examples/Person/t/basic.t
+
+=head3 Execute
+
+ $ prove -lvm t/basic.t
+ t/basic.t ..
+ # Seeded srand with seed '20221023' from local date.
+ ok 1
+ ok 2
+ ok 3
+ 1..3
+ ok
+ All tests successful.
+ Files=1, Tests=3,  0 wallclock secs ( 0.02 usr  0.00 sys +  0.19 cusr  0.05 csys =  0.26 CPU)
+ Result: PASS
+
+=head3 Notes
+
+This example includes excerpts from a full C<Person> dist which you can
+find in the C<examples/Person> directory of this distribution.  You can
+install it like a normal Perl distribution using L<ExtUtils::MakeMaker>,
+or you can simply run the test file by using L<App::Prove>.  That is
+because we are using L<FFI::Build> and L<FFI::Build::File::Cargo> to
+build the Rust parts for us, which know how to work in either mode.
+There are some stuff that we don't show you here for brevity: the
+C<Makefile.PL> for example, and also the rust tests in C<ffi/src/test.rs>
+which test the Rust crate by calling both its Rust and C interface.
+
+What we have done here is created a Rust C<struct> and then written
+C wrappers to create, query and modify the object.  We've also created
+a destructor to free the object when we are done with it.
+
+In terms of naming conventions, we use C<person_> prefix to denote that
+these are methods for the Person class that we are creating.  This is
+a common convention in C, where the only namespaces are adding prefixes
+like this.  We also break the convention of using snake case for the
+destructor C<person_DESTROY> because that will make it easier to bind
+to from Perl.
+
+When we creat the object we use C<Box::new> and C<Box::into_raw> to
+create the object on the heap, and to return the opaque pointer back
+to Perl.
+
+For methods we can convert the raw pointers back into a Person C<struct>
+using C<&*(p as *mut Person)> inside an C<unsafe> block.  In the case
+of C<person_rename> we need a mutable version so we use C<&mut *(p as *mut Person)>
+instead.
+
+Finally when we are done with the object we can free it by simply
+calling C<Box::from_raw>.  When it falls out of scope it will be freed.
+
+On the Perl side, we use the C<mangler> method to prepend all symbols
+with the C<person_> prefix, so that we can attach with just the method
+name.
+
+We also create a Platypus type for C<object(Person)> and give it the
+alias C<person_t>.  Now we can use it as an argument and return type.
+This is really a pointer to an opaque (to perl) C<struct>.
+
+If you look at just the test, then you can't even tell that the implementation
+for our Person class is in Rust, which is good because your users shouldn't
+have to care!
+
 =head1 ADVANCED
 
 =head2 panics
@@ -337,66 +414,6 @@ with a C<catch_unwind> and map to an appropriate result.
          Err(_) -> 1,
      }
  }
-
-=head2 structs
-
-You can map a Rust struct to a Perl object by creating a C OO layer.
-I suggest using the C<c_void> type aliased to an appropriate name so
-that the struct can remain private to the Rust code.
-
-For example, given a Foo struct:
-
- struct Foo {
-     ...
- }
- 
- impl Foo {
-     fn new() -> Foo { ... }
-     fn method1(&self) { ... }
- }
-
-You can write a thin C layer:
-
- type CFoo = c_void;
- 
- #[no_mangle]
- pub extern "C" fn foo_new(_class *const i8) -> *mut CFoo {
-     Box::into_raw(Box::new(Foo::new())) as *mut CFoo
- }
- 
- #[no_mangle]
- pub extern "C" fn foo_method1(f: *mut CFoo) {
-     let f = unsafe { &*(f as *mut Foo) };
-     f.method1();
- }
- 
- #[allow(non_snake_case)]
- #[no_mangle]
- pub extern "C" fn foo_DESTROY(f: *mut CFoo) {
-     unsafe { drop(Box::from_raw(f as *mut Foo)) };
- }
-
-Which can be called easily from Perl:
-
- package Foo {
- 
-     use FFI::Platypus 1.00;
-     my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
-     $ffi->bundle; # see FFI::Build::File::Cargo for how to bundle
-                   # your rust code...
-     $ffi->type( 'object(Foo)' => 'CFoo' );
-     $ffi->mangler(sub {
-         my $symbol = shift;
-         "foo_$symbol";
-     });
-     $ffi->attach( new     => [] => 'CFoo' );
-     $ffi->attach( method1 => ['CFoo'] );
-     $ffi->attach( DESTROY => ['CFoo'] );
- };
- 
- my $foo = Foo->new;
- $foo->method1;
- # $foo->DESTROY implicitly called when it falls out of scope
 
 =head1 METHODS
 
