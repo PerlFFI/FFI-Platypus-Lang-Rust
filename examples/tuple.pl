@@ -3,7 +3,6 @@
 use strict;
 use warnings;
 use FFI::Platypus 2.00;
-use FFI::C;
 use FFI::CheckLib qw( find_lib_or_die );
 use File::Basename qw( dirname );
 
