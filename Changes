@@ -1,7 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
-  - Documentation improvements (gh#5, gh#31, gh#32, gh#35)
+  - Documentation improvements (gh#5, gh#17, gh#22, gh#28,
+    gh#31, gh#32, gh#35)
   - Adding bool type.  As noted in the CAVEATS, this is in
     practice always a sint8, but not technically guaranteed
     by the spec (gh#25, gh#33)
