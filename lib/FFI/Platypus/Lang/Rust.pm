@@ -287,6 +287,32 @@ result.
 (This example is based on one provided in the
 L<Rust FFI Omnibus|http://jakegoulding.com/rust-ffi-omnibus/slice_arguments/>)
 
+=head2 Tuples
+
+=head3 Rust Source
+
+=head3 Perl Source
+
+=head3 Execute
+
+ $ rustc tuple.rs
+ $ perl tuple.pl
+ [21,9]
+
+=head3 Notes
+
+Rust's tuples do not have a standard representation that can be used
+directly from Perl, but if your tuple contains only simple types you
+can use the L<Platypus Record class|FFI::Platypus::Record> and translate
+in Rust between the tuple and the C<struct>.
+
+Because we are passing in and out the entire C<struct>, not pointers
+to a C<struct> we don't have to worry about freeing them from Perl.
+They just get allocated and freed on the stack.
+
+(This example is based on one provided in the
+L<Rust FFI Omnibus|http://jakegoulding.com/rust-ffi-omnibus/tuples/>)
+
 =head1 ADVANCED
 
 =head2 panics
