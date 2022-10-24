@@ -552,6 +552,34 @@ result.
 (This example is based on one provided in the
 [Rust FFI Omnibus](http://jakegoulding.com/rust-ffi-omnibus/slice_arguments/))
 
+## Tuples
+
+### Rust Source
+
+### Perl Source
+
+### Execute
+
+```
+$ rustc tuple.rs
+$ perl tuple.pl
+[21,9]
+```
+
+### Notes
+
+Rust's tuples do not have a standard representation that can be used
+directly from Perl, but if your tuple contains only simple types you
+can use the [Platypus Record class](https://metacpan.org/pod/FFI::Platypus::Record) and translate
+in Rust between the tuple and the `struct`.
+
+Because we are passing in and out the entire `struct`, not pointers
+to a `struct` we don't have to worry about freeing them from Perl.
+They just get allocated and freed on the stack.
+
+(This example is based on one provided in the
+[Rust FFI Omnibus](http://jakegoulding.com/rust-ffi-omnibus/tuples/))
+
 # ADVANCED
 
 ## panics
