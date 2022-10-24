@@ -23,6 +23,7 @@ $ffi->type( 'object(Person)' => 'person_t' );
 
 $ffi->attach( new          => [ 'string', 'string', 'i32' ] => 'person_t' );
 $ffi->attach( name         => [ 'person_t' ] => 'string' );
+$ffi->attach( rename       => [ 'person_t', 'string' ] );
 $ffi->attach( lucky_number => [ 'person_t' ] => 'i32' );
 $ffi->attach( DESTROY      => [ 'person_t' ] );
 
