@@ -865,28 +865,76 @@ If you look at just the test, then you can't even tell that the implementation
 for our Person class is in Rust, which is good because your users shouldn't
 have to care!
 
-# ADVANCED
+## Panic!
 
-## panics
-
-Be careful about code that might `panic!`.  A `panic!` across an FFI
-boundary is undefined behavior.  You will want to catch the panic
-with a `catch_unwind` and map to an appropriate result.
+### Rust Source
 
 ```perl
+#![crate_type = "cdylib"]
+
 use std::panic::catch_unwind;
 
+fn might_panic(i: u32) -> u32 {
+    if i % 2 == 1 {
+        panic!("oops!");
+    }
+    i / 2
+}
+
 #[no_mangle]
-pub extern fn oopsie() -> u32 {
+pub extern "C" fn oopsie(i: u32) -> i64 {
     let result = catch_unwind(|| {
-        might_panic();
+        might_panic(i)
     });
     match result {
-        OK(_) => 0,
-        Err(_) -> 1,
+        Ok(i) => i as i64,
+        Err(_) => -1,
     }
 }
 ```
+
+### Perl Source
+
+```perl
+use FFI::Platypus 2.00;
+use FFI::CheckLib qw( find_lib_or_die );
+use File::Basename qw( dirname );
+
+my $ffi = FFI::Platypus->new( api => 2, lang => 'Rust' );
+$ffi->lib(
+    find_lib_or_die(
+        lib        => 'panic',
+        libpath    => [dirname __FILE__],
+        systempath => [],
+    )
+);
+
+$ffi->attach( oopsie => ['u32'] => 'i64' );
+
+print oopsie(5), "\n";   # -1
+print oopsie(10), "\n";  # 5
+```
+
+### Execute
+
+```
+$ perl panic.pl                     
+thread '<unnamed>' panicked at 'oops!', panic.rs:7:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+-1
+5
+```
+
+### Notes
+
+Be cautious about code that might `panic!`.  A `panic!` across the FFI
+boundary is undefined behavior and usually results in a crash.  You will
+want to catch the panic with a `catch_unwind` and map to an appropriate
+error result.  In this example, we have a function that returns the
+integer passed in divided by 2.  It does not like odd numbers though and
+will panic.  So we catch the panic and return -1 to indicate an error.
+As you can see from the run we also get a rather ugly diagnostic, but
+at least our program didn't crash!
 
 # METHODS
 
