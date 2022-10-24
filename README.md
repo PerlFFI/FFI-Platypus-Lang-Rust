@@ -310,7 +310,6 @@ use std::iter;
 
 #[no_mangle]
 pub extern "C" fn theme_song_generate(length: u8) -> *const i8 {
-
     thread_local! {
         static KEEP: RefCell<Option<CString>> = RefCell::new(None);
     }
@@ -501,7 +500,7 @@ use std::slice;
 #[no_mangle]
 pub extern "C" fn sum_of_even(numbers: *const u32, len: usize) -> i64 {
     if numbers.is_null() {
-        return -1
+        return -1;
     }
 
     let numbers = unsafe { slice::from_raw_parts(numbers, len) };
@@ -521,7 +520,7 @@ use std::slice;
 #[no_mangle]
 pub extern "C" fn sum_of_even(numbers: *const u32, len: usize) -> i64 {
     if numbers.is_null() {
-        return -1
+        return -1;
     }
 
     let numbers = unsafe { slice::from_raw_parts(numbers, len) };
@@ -883,9 +882,7 @@ fn might_panic(i: u32) -> u32 {
 
 #[no_mangle]
 pub extern "C" fn oopsie(i: u32) -> i64 {
-    let result = catch_unwind(|| {
-        might_panic(i)
-    });
+    let result = catch_unwind(|| might_panic(i));
     match result {
         Ok(i) => i as i64,
         Err(_) => -1,
