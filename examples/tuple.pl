@@ -21,7 +21,7 @@ use FFI::Platypus::Record;
 
 use overload
   '""' => sub { shift->as_string },
-  bool => sub { 1 }, fallback => 1;  
+  bool => sub { 1 }, fallback => 1;
 
 record_layout_1($ffi, qw(
   u32 x
