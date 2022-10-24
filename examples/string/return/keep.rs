@@ -6,7 +6,6 @@ use std::iter;
 
 #[no_mangle]
 pub extern "C" fn theme_song_generate(length: u8) -> *const i8 {
-
     thread_local! {
         static KEEP: RefCell<Option<CString>> = RefCell::new(None);
     }
