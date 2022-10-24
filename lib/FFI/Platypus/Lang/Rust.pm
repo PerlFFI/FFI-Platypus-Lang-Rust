@@ -291,7 +291,11 @@ L<Rust FFI Omnibus|http://jakegoulding.com/rust-ffi-omnibus/slice_arguments/>)
 
 =head3 Rust Source
 
+# EXAMPLE: examples/tuple.rs
+
 =head3 Perl Source
+
+# EXAMPLE: examples/tuple.pl
 
 =head3 Execute
 
