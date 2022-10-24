@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.10      2022-10-23 19:39:14 -0600
   - Documentation improvements (gh#5, gh#17, gh#22, gh#28,
     gh#31, gh#32, gh#35)
   - Adding bool type.  As noted in the CAVEATS, this is in
