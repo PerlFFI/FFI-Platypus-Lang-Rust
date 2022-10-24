@@ -331,7 +331,7 @@ Main class:
 
 Test:
 
-# examples/Person/t/basic.t
+# EXAMPLE: examples/Person/t/basic.t
 
 =head3 Execute
 
