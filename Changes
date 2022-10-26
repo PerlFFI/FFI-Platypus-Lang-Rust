@@ -1,6 +1,9 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+  - Fix bug where FFI::Build::File::Cargo would usually exit
+    on failure instead of die, which in dev / prove mode would
+    throw away any diagnostics (gh#37)
 
 0.10      2022-10-23 19:39:14 -0600
   - Documentation improvements (gh#5, gh#17, gh#22, gh#28,
