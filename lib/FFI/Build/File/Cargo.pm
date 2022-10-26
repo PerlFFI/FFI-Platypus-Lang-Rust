@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use 5.008001;
 use File::chdir;
-use FFI::CheckLib 0.11 qw( find_lib_or_exit );
+use FFI::CheckLib 0.11 qw( find_lib_or_die );
 use File::Copy qw( copy );
 use Path::Tiny ();
 use FFI::Build::File::Base 1.00 ();
@@ -154,14 +154,14 @@ sub build_item
     my @cmd = ('cargo', 'test', @cargo_flags);
     print "+@cmd\n";
     system @cmd;
-    exit 2 if $?;
+    die "error running cargo test" if $?;
 
     @cmd = ('cargo', 'build', @cargo_flags);
     print "+@cmd\n";
     system @cmd;
-    exit 2 if $?;
+    die "error running cargo build" if $?;
 
-    my($dl) = find_lib_or_exit
+    my($dl) = find_lib_or_die
       lib        => '*',
       libpath    => "$CWD/target/release",
       systempath => [],
