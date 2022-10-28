@@ -27,11 +27,6 @@ reduce cognitive load and concentrate on Rust and forget about C types.
 This document also documents issues and caveats that I have discovered
 in my attempts to work with Rust and FFI.
 
-This module is somewhat experimental.  It is also available for adoption
-for anyone either sufficiently knowledgeable about Rust or eager enough
-to learn enough about Rust.  If you are interested, please send me a
-pull request or two on the project's GitHub.
-
 Note that in addition to using pre-compiled Rust libraries, you can
 bundle Rust code with your Perl distribution using L<FFI::Build> and
 L<FFI::Build::File::Cargo>.
@@ -406,7 +401,7 @@ have to care!
 
 =head3 Execute
 
- $ perl panic.pl                     
+ $ perl panic.pl
  thread '<unnamed>' panicked at 'oops!', panic.rs:7:9
  note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
  -1
