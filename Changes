@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+  - Documentation improvements (gh#38)
 
 0.11      2022-10-26 05:57:14 -0600
   - Fix bug where FFI::Build::File::Cargo would usually exit

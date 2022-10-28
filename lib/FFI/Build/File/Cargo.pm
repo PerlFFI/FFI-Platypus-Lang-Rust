@@ -28,17 +28,21 @@ Add this to your C<ffi/Cargo.toml> file to get dynamic libraries:
  [lib]
  crate-type = ["cdylib"]
 
-Your library goes in C<lib/MyLib.pm>:
+Add Rust code to C<ffi/src/lib.rs> that you want to call from Perl:
+
+# EXAMPLE: examples/add.rs
+
+Your Perl bindings go in a C<.pm> file like C<lib/MyLib.pm>:
 
  package MyLib;
  
- use FFI::Platypus 1.00;
+ use FFI::Platypus 2.00;
  
- my $ffi = FFI::Platypus->new( api => 1, lang => 'Rust' );
+ my $ffi = FFI::Platypus->new( api => 2, lang => 'Rust' );
  # configure platypus to use the bundled Rust code
  $ffi->bundle;
  
- ...
+ $ffi->attach( 'add' => ['i32','i32'] => 'i32' );
 
 Your C<Makefile.PL>:
 
@@ -69,6 +73,17 @@ Your C<Makefile.PL>:
 or alternatively, your C<dist.ini>:
 
  [FFI::Build]
+ lang = Rust
+ build = Cargo
+
+Write a test:
+
+ use Test2::V0;
+ use MyLib;
+ 
+ is MyLib::add(1,2), 3;
+ 
+ done_testing;
 
 =head1 DESCRIPTION
 
