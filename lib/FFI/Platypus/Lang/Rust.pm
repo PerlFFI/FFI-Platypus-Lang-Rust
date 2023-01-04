@@ -495,6 +495,10 @@ Detailed Rust documentation on crossing the FFI barrier.
 
 Unsafe Rust in the Rust Programming Language book.
 
+=item L<Test2::Tools::Rustfmt>
+
+Add tests to make sure that your bundled Rust code is tidy.
+
 =back
 
 =cut

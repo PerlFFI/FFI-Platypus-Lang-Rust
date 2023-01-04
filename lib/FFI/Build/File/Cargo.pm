@@ -254,6 +254,10 @@ The Core Platypus documentation.
 
 Rust language plugin for Platypus.
 
+=item L<Test2::Tools::Rustfmt>
+
+Add tests to make sure that your bundled Rust code is tidy.
+
 =back
 
 =cut
