@@ -4,8 +4,16 @@ use File::chdir;
 use File::Which   qw( which);
 use File::Glob    qw( bsd_glob );
 use Capture::Tiny qw( capture_merged );
+use Env qw( @PATH );
 
 my $rustc = which 'rustc';
+
+unless($rustc)
+{
+  require Alien::Rust;
+  unshift @PATH, Alien::Rust->bin_dir;
+  $rustc = which 'rustc';
+}
 
 foreach my $dir (qw( examples examples/old examples/string examples/string/return ))
 {
