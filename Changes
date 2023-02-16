@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+  - Use Alien::Rust if rustc and cargo are not already
+    installed (gh#39, gh#40)
 
 0.12      2022-10-27 21:54:54 -0600
   - Documentation improvements (gh#38)
