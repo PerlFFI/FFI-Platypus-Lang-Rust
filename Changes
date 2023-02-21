@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+  - Bump Alien::Rust prereq to 0.03 for better handling
+    of rust home.
 
 0.14      2023-02-16 06:16:37 -0700
   - Use Alien::Rust if rustc and cargo are not already
