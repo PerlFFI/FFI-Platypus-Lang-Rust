@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.16      2023-06-14 17:05:55 -0600
   - use `*std::os::raw::c_char` instead of `*i8` for strings,
     as this is more portable.  In particular *u8 or *c_char
     is expected on Linux Arm64. (gh#42)
