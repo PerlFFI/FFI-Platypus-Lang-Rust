@@ -1,4 +1,5 @@
 use std::ffi::CStr;
+use std::os::raw::c_char;
 
 #[test]
 fn rust_lib_works() {
@@ -18,7 +19,7 @@ const TEST_OTHER_NAME: *const u8 = b"Graham THE Ollis\0" as *const u8;
 
 #[test]
 fn c_lib_works() {
-    let plicease = crate::person_new(TEST_CLASS as *const i8, TEST_NAME as *const i8, 42);
+    let plicease = crate::person_new(TEST_CLASS as *const c_char, TEST_NAME as *const c_char, 42);
     assert_eq!(
         unsafe {
             CStr::from_ptr(crate::person_name(plicease))
@@ -29,7 +30,7 @@ fn c_lib_works() {
     );
     assert_eq!(crate::person_lucky_number(plicease), 42);
 
-    crate::person_rename(plicease, TEST_OTHER_NAME as *const i8);
+    crate::person_rename(plicease, TEST_OTHER_NAME as *const c_char);
 
     assert_eq!(
         unsafe {
