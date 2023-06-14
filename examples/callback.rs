@@ -2,7 +2,7 @@
 
 use std::ffi::CString;
 
-type PerlLog = extern "C" fn(line: *const i8);
+type PerlLog = extern "C" fn(line: *const u8);
 
 #[no_mangle]
 pub extern "C" fn rust_log(logf: PerlLog) {

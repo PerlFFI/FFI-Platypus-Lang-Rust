@@ -3,7 +3,7 @@
 use std::ffi::CStr;
 
 #[no_mangle]
-pub extern "C" fn how_many_characters(s: *const i8) -> isize {
+pub extern "C" fn how_many_characters(s: *const u8) -> isize {
     if s.is_null() {
         return -1;
     }

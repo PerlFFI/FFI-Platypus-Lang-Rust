@@ -33,8 +33,8 @@ type CPerson = c_void;
 
 #[no_mangle]
 pub extern "C" fn person_new(
-    _class: *const i8,
-    name: *const i8,
+    _class: *const u8,
+    name: *const u8,
     lucky_number: i32,
 ) -> *mut CPerson {
     let name = unsafe { CStr::from_ptr(name) };
@@ -43,7 +43,7 @@ pub extern "C" fn person_new(
 }
 
 #[no_mangle]
-pub extern "C" fn person_name(p: *mut CPerson) -> *const i8 {
+pub extern "C" fn person_name(p: *mut CPerson) -> *const u8 {
     thread_local!(
         static KEEP: RefCell<Option<CString>> = RefCell::new(None);
     );
@@ -58,7 +58,7 @@ pub extern "C" fn person_name(p: *mut CPerson) -> *const i8 {
 }
 
 #[no_mangle]
-pub extern "C" fn person_rename(p: *mut CPerson, new: *const i8) {
+pub extern "C" fn person_rename(p: *mut CPerson, new: *const u8) {
     let new = unsafe { CStr::from_ptr(new) };
     let p = unsafe { &mut *(p as *mut Person) };
     if let Ok(new) = new.to_str() {

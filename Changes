@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+  - Fix string examples to use `*cost u8` instead of
+    `*const i8`
 
 0.15      2023-02-21 08:05:34 -0700
   - Bump Alien::Rust prereq to 0.03 for better handling

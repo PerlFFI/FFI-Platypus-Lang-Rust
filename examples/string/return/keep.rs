@@ -5,7 +5,7 @@ use std::ffi::CString;
 use std::iter;
 
 #[no_mangle]
-pub extern "C" fn theme_song_generate(length: u8) -> *const i8 {
+pub extern "C" fn theme_song_generate(length: u8) -> *const u8 {
     thread_local! {
         static KEEP: RefCell<Option<CString>> = RefCell::new(None);
     }
