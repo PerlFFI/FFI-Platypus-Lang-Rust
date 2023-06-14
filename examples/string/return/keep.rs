@@ -3,9 +3,10 @@
 use std::cell::RefCell;
 use std::ffi::CString;
 use std::iter;
+use std::os::raw::c_char;
 
 #[no_mangle]
-pub extern "C" fn theme_song_generate(length: u8) -> *const i8 {
+pub extern "C" fn theme_song_generate(length: u8) -> *const c_char {
     thread_local! {
         static KEEP: RefCell<Option<CString>> = RefCell::new(None);
     }

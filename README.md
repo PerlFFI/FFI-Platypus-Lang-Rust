@@ -125,9 +125,10 @@ a non-Rust language like Perl.
 #![crate_type = "cdylib"]
 
 use std::ffi::CStr;
+use std::os::raw::c_char;
 
 #[no_mangle]
-pub extern "C" fn how_many_characters(s: *const i8) -> isize {
+pub extern "C" fn how_many_characters(s: *const c_char) -> isize {
     if s.is_null() {
         return -1;
     }
@@ -216,9 +217,10 @@ Getting a Rust string slice `&str` requires a few stems
 
 use std::ffi::CString;
 use std::iter;
+use std::os::raw::c_char;
 
 #[no_mangle]
-pub extern "C" fn theme_song_generate(length: u8) -> *mut i8 {
+pub extern "C" fn theme_song_generate(length: u8) -> *mut c_char {
     let mut song = String::from("💣 ");
     song.extend(iter::repeat("na ").take(length as usize));
     song.push_str("Batman! 💣");
@@ -228,7 +230,7 @@ pub extern "C" fn theme_song_generate(length: u8) -> *mut i8 {
 }
 
 #[no_mangle]
-pub extern "C" fn theme_song_free(s: *mut i8) {
+pub extern "C" fn theme_song_free(s: *mut c_char) {
     if s.is_null() {
         return;
     }
@@ -302,9 +304,10 @@ do all of that for us.
 use std::cell::RefCell;
 use std::ffi::CString;
 use std::iter;
+use std::os::raw::c_char;
 
 #[no_mangle]
-pub extern "C" fn theme_song_generate(length: u8) -> *const i8 {
+pub extern "C" fn theme_song_generate(length: u8) -> *const c_char {
     thread_local! {
         static KEEP: RefCell<Option<CString>> = RefCell::new(None);
     }
@@ -424,8 +427,9 @@ error messages.
 #![crate_type = "cdylib"]
 
 use std::ffi::CString;
+use std::os::raw::c_char;
 
-type PerlLog = extern "C" fn(line: *const i8);
+type PerlLog = extern "C" fn(line: *const c_char);
 
 #[no_mangle]
 pub extern "C" fn rust_log(logf: PerlLog) {
@@ -661,6 +665,7 @@ use std::cell::RefCell;
 use std::ffi::c_void;
 use std::ffi::CStr;
 use std::ffi::CString;
+use std::os::raw::c_char;
 
 struct Person {
     name: String,
@@ -692,8 +697,8 @@ type CPerson = c_void;
 
 #[no_mangle]
 pub extern "C" fn person_new(
-    _class: *const i8,
-    name: *const i8,
+    _class: *const c_char,
+    name: *const c_char,
     lucky_number: i32,
 ) -> *mut CPerson {
     let name = unsafe { CStr::from_ptr(name) };
@@ -702,7 +707,7 @@ pub extern "C" fn person_new(
 }
 
 #[no_mangle]
-pub extern "C" fn person_name(p: *mut CPerson) -> *const i8 {
+pub extern "C" fn person_name(p: *mut CPerson) -> *const c_char {
     thread_local!(
         static KEEP: RefCell<Option<CString>> = RefCell::new(None);
     );
@@ -717,7 +722,7 @@ pub extern "C" fn person_name(p: *mut CPerson) -> *const i8 {
 }
 
 #[no_mangle]
-pub extern "C" fn person_rename(p: *mut CPerson, new: *const i8) {
+pub extern "C" fn person_rename(p: *mut CPerson, new: *const c_char) {
     let new = unsafe { CStr::from_ptr(new) };
     let p = unsafe { &mut *(p as *mut Person) };
     if let Ok(new) = new.to_str() {

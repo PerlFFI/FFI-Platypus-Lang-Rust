@@ -1,8 +1,9 @@
 #![crate_type = "cdylib"]
 
 use std::ffi::CString;
+use std::os::raw::c_char;
 
-type PerlLog = extern "C" fn(line: *const i8);
+type PerlLog = extern "C" fn(line: *const c_char);
 
 #[no_mangle]
 pub extern "C" fn rust_log(logf: PerlLog) {

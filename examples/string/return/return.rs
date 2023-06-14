@@ -2,9 +2,10 @@
 
 use std::ffi::CString;
 use std::iter;
+use std::os::raw::c_char;
 
 #[no_mangle]
-pub extern "C" fn theme_song_generate(length: u8) -> *mut i8 {
+pub extern "C" fn theme_song_generate(length: u8) -> *mut c_char {
     let mut song = String::from("💣 ");
     song.extend(iter::repeat("na ").take(length as usize));
     song.push_str("Batman! 💣");
@@ -14,7 +15,7 @@ pub extern "C" fn theme_song_generate(length: u8) -> *mut i8 {
 }
 
 #[no_mangle]
-pub extern "C" fn theme_song_free(s: *mut i8) {
+pub extern "C" fn theme_song_free(s: *mut c_char) {
     if s.is_null() {
         return;
     }

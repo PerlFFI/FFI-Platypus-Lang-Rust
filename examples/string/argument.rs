@@ -1,9 +1,10 @@
 #![crate_type = "cdylib"]
 
 use std::ffi::CStr;
+use std::os::raw::c_char;
 
 #[no_mangle]
-pub extern "C" fn how_many_characters(s: *const i8) -> isize {
+pub extern "C" fn how_many_characters(s: *const c_char) -> isize {
     if s.is_null() {
         return -1;
     }
