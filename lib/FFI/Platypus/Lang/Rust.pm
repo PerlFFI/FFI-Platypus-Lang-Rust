@@ -214,7 +214,7 @@ L<Rust FFI Omnibus|http://jakegoulding.com/rust-ffi-omnibus/string_arguments/>)
 
 =head3 Perl Source
 
-# EXAMPLE: examples/string/return/static.rs
+# EXAMPLE: examples/string/return/static.pl
 
 =head3 Execute
 
@@ -261,7 +261,7 @@ pass the closure into Rust.
 
 =head3 Perl Source
 
-# EXAMPLE: examples/slice.rs
+# EXAMPLE: examples/slice.pl
 
 =head3 Execute
 
