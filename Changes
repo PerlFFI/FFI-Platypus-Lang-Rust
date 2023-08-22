@@ -1,6 +1,9 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+  - Fixed documentation error that was listing Rust source
+    twice instead of the Rust and Perl source as it should
+    have done (gh#43, gh#44)
 
 0.16      2023-06-14 17:05:55 -0600
   - use `*std::os::raw::c_char` instead of `*i8` for strings,
